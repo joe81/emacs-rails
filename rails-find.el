@@ -46,10 +46,11 @@
 (rails-find:gen "config"      "config")
 (rails-find:gen "lib"         "lib")
 (rails-find:gen "tasks"       "lib/tasks")
-(rails-find:gen "stylesheets" "public/stylesheets")
-(rails-find:gen "javascripts" "public/javascripts")
+(rails-find:gen "stylesheets" "app/assets/stylesheets")
+(rails-find:gen "javascripts" "app/assets/javascripts")
 (rails-find:gen "migrate"     "db/migrate")
 (rails-find:gen "fixtures"    "test/fixtures")
+(rails-find:gen "assets"      "app/assets")
 
 ;; Rspec
 (rails-find:gen "spec" "spec/")

@@ -44,9 +44,9 @@
       ([routes]      '("routes.rb" .
                        (lambda () (interactive)
                          (rails-core:find-file "config/routes.rb"))))
-      ([environment] '("environment.rb" .
+      ([environment] '("application.rb" .
                        (lambda() (interactive)
-                         (rails-core:find-file "config/environment.rb"))))
+                         (rails-core:find-file "config/application.rb"))))
       ([database]    '("database.yml" .
                        (lambda() (interactive)
                          (rails-core:find-file "config/database.yml"))))
@@ -80,6 +80,9 @@
       ([goto-unit-tests]  '("Go to Unit Tests"       . rails-nav:goto-unit-tests))
       ([goto-func-tests]  '("Go to Functional Tests" . rails-nav:goto-functional-tests))
       ([goto-models]      '("Go to Models"           . rails-nav:goto-models))
+      ([goto-libs]        '("Go to Libs"             . rails-nav:goto-libs))
+      ([goto-mailers]     '("Go to Mailers"          . rails-nav:goto-mailers))
+      ([goto-integration-tests] '("Go to Integration Tests"           . rails-nav:goto-integration-tests))
       ([goto-controllers] '("Go to Controllers"      . rails-nav:goto-controllers))
       ([goto-rspec-controllers] '("Go to RSpec Controllers" . rails-nav:goto-rspec-controllers))
       ([goto-rspec-lib]         '("Go to RSpec Lib"         . rails-nav:goto-rspec-lib))
@@ -224,6 +227,7 @@
 
   ;; Goto
   ((rails-key "\C-c g m") 'rails-nav:goto-models)
+  ((rails-key "\C-c g b") 'rails-nav:goto-libs)
   ((rails-key "\C-c g c") 'rails-nav:goto-controllers)
   ((rails-key "\C-c g o") 'rails-nav:goto-observers)
   ((rails-key "\C-c g n") 'rails-nav:goto-mailers)
@@ -235,6 +239,7 @@
   ((rails-key "\C-c g p") 'rails-nav:goto-plugins)
   ((rails-key "\C-c g x") 'rails-nav:goto-fixtures)
   ((rails-key "\C-c g f") 'rails-nav:goto-functional-tests)
+  ((rails-key "\C-c g i") 'rails-nav:goto-integration-tests)
   ((rails-key "\C-c g u") 'rails-nav:goto-unit-tests)
   ((rails-key "\C-c g r c") 'rails-nav:goto-rspec-controllers)
   ((rails-key "\C-c g r f") 'rails-nav:goto-rspec-fixtures)
@@ -279,6 +284,7 @@
   ((rails-key "\C-c f p") 'rails-find:public)
   ((rails-key "\C-c f f") 'rails-find:fixtures)
   ((rails-key "\C-c f o") 'rails-find:config)
+  ((rails-key "\C-c f a") 'rails-find:assets)
   ;; Spec finds
   ((rails-key "\C-c f r s") 'rails-find:spec)
   ((rails-key "\C-c f r c") 'rails-find:spec-controllers)
@@ -322,6 +328,9 @@
   ((rails-key "\C-c \C-t") 'rails-create-tags)
 
   ;; Documentation
+  ([f1]                  'rails-search-doc)
+  ((kbd "<C-f1>")        'rails-browse-api-at-point)
+  ((rails-key "<f1>")     'rails-browse-api)
   ((rails-key "/")        'rails-script:toggle-output-window)
 
   ;; Other

@@ -38,7 +38,7 @@
             (progn
               (message "Empty partial name") (return)))
           (kill-region (region-beginning) (region-end))
-          (insert (concat "<%= render :partial => \"" name "\" %>"))
+          (insert (concat "<%= render '" name "' %>"))
           (insert "\n")
           (split-window-vertically)
           (other-window 1)
@@ -75,7 +75,7 @@
                (let ((modified (buffer-modified-p))
                      (helper-func-def (concat "def " helper-defination)))
                  (kill-region begin-pos end-pos)
-                 (insert (concat "<%= " helper-defination " -%>" ))
+                 (insert (concat "<%= " helper-defination " %>" ))
                  (funcall indent-line-function)
                  (insert "\n")
                  (split-window-vertically)

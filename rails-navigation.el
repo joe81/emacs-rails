@@ -79,6 +79,22 @@
    "Go to model.."
    'rails-core:model-file))
 
+(defun rails-nav:goto-assets ()
+  "Go to assets.."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:assets)
+   "Go to assets.."
+   'rails-core:asset-file))
+
+(defun rails-nav:goto-libs ()
+  "Go to libs.."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:libs)
+   "Go to libs.."
+   'rails-core:lib-file))
+
 (defun rails-nav:goto-functional-tests ()
   "Go to functional tests."
   (interactive)
@@ -86,6 +102,14 @@
    (rails-core:functional-tests)
    "Go to functional test.."
    'rails-core:functional-test-file))
+
+(defun rails-nav:goto-integration-tests ()
+  "Go to integration tests."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:integration-tests)
+   "Go to integration test.."
+   'rails-core:integration-test-file))
 
 (defun rails-nav:goto-unit-tests ()
   "Go to functional tests."
@@ -212,12 +236,12 @@
 (defun rails-nav:goto-stylesheets ()
   "Go to stylesheets."
   (interactive)
-  (rails-nav:goto-file-with-menu "public/stylesheets/" "Go to stylesheet.." "css" t))
+  (rails-nav:goto-file-with-menu "app/assets/stylesheets/" "Go to stylesheets .." "css" t))
 
 (defun rails-nav:goto-javascripts ()
   "Go to JavaScripts."
   (interactive)
-  (rails-nav:goto-file-with-menu "public/javascripts/" "Go to stylesheet.." "js" t))
+  (rails-nav:goto-file-with-menu "app/assets/javascripts/" "Go to javascripts .." "js" t))
 
 ;;;;;;;;;; Goto file on current line ;;;;;;;;;;
 

@@ -33,9 +33,12 @@
     "app/views"
     "app/models"
     "app/helpers"
+    "app/mailers"
+    "app/assets"
     "test/unit"
     "test/functional"
     "test/fixtures"
+    "test/integration"
     "spec/controllers"
     "spec/requests"
     "spec/fixtures"
@@ -48,7 +51,7 @@
 
 (defun rails-core:class-by-file (filename)
   "Return the class associated with FILENAME.
-   <rails-root>/(app/models|app/controllers|app/helpers|test/unit|test/functional|lib|spec/controllers|spec/lib|spec/models)/foo/bar_baz
+   <rails-root>/(app/assets|app/mailers|app/models|app/controllers|app/helpers|test/unit|test/functional|test/integration|lib|spec/controllers|spec/lib|spec/models)/foo/bar_baz
                 --> Foo::BarBaz"
   (let* ((case-fold-search nil)
          (path (replace-regexp-in-string
@@ -239,7 +242,7 @@ it does not exist, ask to create it using QUESTION as a prompt."
 
 (defun rails-core:js-file (js)
   "Return the path to the JavaScript file named JS."
-  (concat "public/javascripts/" js ".js"))
+  (concat "app/assets/javascripts/" js ".js"))
 
 (defun rails-core:partial-name (name)
   "Return the file name of partial NAME."
@@ -276,6 +279,20 @@ CONTROLLER."
     (format "test/functional/%s_test.rb"
             (rails-core:file-by-class (rails-core:long-controller-name controller) t))))
 
+(defun rails-core:integration-test-file (integration)
+  "Return the integration test file name for the controller named
+CONTROLLER."
+  (when integration
+    (format "test/integration/%s_test.rb"
+            (rails-core:file-by-class integration t))))
+
+(defun rails-core:mailer-file (mailer)
+  "Return the mailer file name for the controller named
+CONTROLLER."
+  (when mailer
+    (format "app/mailers/%s.rb"
+            (rails-core:file-by-class mailer t))))
+
 (defun rails-core:unit-test-file (model)
   "Return the unit test file name for the model named MODEL."
   (when model
@@ -303,7 +320,7 @@ CONTROLLER."
 
 (defun rails-core:stylesheet-name (name)
   "Return the file name of the stylesheet named NAME."
-  (concat "public/stylesheets/" name ".css"))
+  (concat "app/assets/stylesheets/" name ".css"))
 
 (defun rails-core:controller-name (controller-file)
   "Return the class name of the controller named CONTROLLER.
@@ -417,6 +434,14 @@ suffix if CUT-CONTOLLER-SUFFIX is non nil."
                        "ControllerTest"))
    (directory-files-recursive (rails-core:file "test/functional/") nil "\\.rb$")))
 
+(defun rails-core:integration-tests ()
+  "Return a list of Rails integration tests."
+  (mapcar
+   #'(lambda(it)
+       (remove-postfix (rails-core:class-by-file it)
+                       "Test"))
+   (directory-files-recursive (rails-core:file "test/integration/") nil "\\.rb$")))
+
 (defun rails-core:models ()
   "Return a list of Rails models."
   (mapcar
@@ -425,6 +450,28 @@ suffix if CUT-CONTOLLER-SUFFIX is non nil."
     #'(lambda (file) (or (rails-core:observer-p file)
                          (rails-core:mailer-p file)))
     (directory-files-recursive (rails-core:file "app/models/") nil "\\.rb$"))))
+
+(defun rails-core:libs ()
+  "Return a list of file in libs."
+  (mapcar
+   #'rails-core:class-by-file
+   (directory-files-recursive (rails-core:file "lib/") nil "\\.rb$")))
+
+  ;; (mapcar
+  ;;  #'rails-core:class-by-file
+  ;;  (directory-files-recursive (rails-core:file "lib/") nil "\\.rb$"))))
+
+(defun rails-core:lib-file (filename)
+  "todo: document that."
+  (when filename
+    (format "lib/%s.rb"
+            (rails-core:file-by-class filename t))))
+
+(defun rails-core:mailer-file (filename)
+  "todo: document that."
+  (when filename
+    (format "app/mailers/%s.rb"
+            (rails-core:file-by-class filename t))))
 
 (defun rails-core:unit-tests ()
   "Return a list of Rails functional tests."
@@ -446,7 +493,7 @@ suffix if CUT-CONTOLLER-SUFFIX is non nil."
   "Return a list of Rails mailers."
   (mapcar
    #'rails-core:class-by-file
-   (directory-files-recursive (rails-core:file "app/models/") nil "\\(_mailer\\|_notifier\\)\\.rb$")))
+   (directory-files-recursive (rails-core:file "app/mailers/") nil "\\.rb$")))
 
 (defun rails-core:helpers ()
   "Return a list of Rails helpers."

@@ -1,4 +1,4 @@
-;;; rails-unit-test-minor-mode.el --- minor mode for RubyOnRails unit tests
+;;; rails-controllers-test-minor-mode.el --- minor mode for RubyOnRails controllers tests
 
 ;; Copyright (C) 2006 Dmitry Galinsky <dima dot exe at gmail dot com>
 
@@ -26,18 +26,14 @@
 
 ;;; Code:
 
-(define-minor-mode rails-unit-test-minor-mode
-  "Minor mode for RubyOnRails unit tests."
-  :lighter " UTest"
-  :keymap (let ((map (rails-model-layout:keymap :unit-test)))
+(define-minor-mode rails-controllers-test-minor-mode
+  "Minor mode for RubyOnRails controllers tests."
+  :lighter " FTest"
+  :keymap (let ((map (rails-controller-layout:keymap :controllers-test)))
             (define-key map rails-minor-mode-test-current-method-key 'rails-test:run-current-method)
-            (define-key map [menu-bar rails-model-layout run] '("Test current method" . rails-test:run-current-method))
+            (define-key map [menu-bar rails-controller-layout run] '("Test current method" . rails-test:run-current-method))
             map)
-  (setq rails-primary-switch-func (lambda()
-                                    (interactive)
-                                    (if (rails-core:mailer-p (rails-core:current-model))
-                                        (rails-model-layout:switch-to-mailer)
-                                      (rails-model-layout:switch-to-model))))
-  (setq rails-secondary-switch-func 'rails-model-layout:menu))
+  (setq rails-primary-switch-func 'rails-controller-layout:switch-to-controller)
+  (setq rails-secondary-switch-func 'rails-controller-layout:menu))
 
-(provide 'rails-unit-test-minor-mode)
+(provide 'rails-controllers-test-minor-mode)

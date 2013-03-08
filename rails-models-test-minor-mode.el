@@ -1,4 +1,4 @@
-;;; rails-functional-test-minor-mode.el --- minor mode for RubyOnRails functional tests
+;;; rails-models-test-minor-mode.el --- minor mode for RubyOnRails models tests
 
 ;; Copyright (C) 2006 Dmitry Galinsky <dima dot exe at gmail dot com>
 
@@ -26,14 +26,13 @@
 
 ;;; Code:
 
-(define-minor-mode rails-functional-test-minor-mode
-  "Minor mode for RubyOnRails functional tests."
-  :lighter " FTest"
-  :keymap (let ((map (rails-controller-layout:keymap :functional-test)))
+(define-minor-mode rails-models-test-minor-mode
+  "Minor mode for RubyOnRails models tests."
+  :lighter " ModelTest"
+  :keymap (let ((map (rails-model-layout:keymap :models-test)))
             (define-key map rails-minor-mode-test-current-method-key 'rails-test:run-current-method)
-            (define-key map [menu-bar rails-controller-layout run] '("Test current method" . rails-test:run-current-method))
+            (define-key map [menu-bar rails-model-layout run] '("Test current method" . rails-test:run-current-method))
             map)
-  (setq rails-primary-switch-func 'rails-controller-layout:switch-to-controller)
-  (setq rails-secondary-switch-func 'rails-controller-layout:menu))
+  (setq rails-secondary-switch-func 'rails-model-layout:menu))
 
-(provide 'rails-functional-test-minor-mode)
+(provide 'rails-models-test-minor-mode)

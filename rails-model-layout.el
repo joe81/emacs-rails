@@ -36,10 +36,10 @@
                                        rails-model-layout:switch-to-model
                                        :enable (and (not (eq (rails-core:buffer-type) :model))
                                                     (rails-core:model-exist-p (rails-core:current-model)))))
-        ([goto-utest]      '(menu-item "Go to Unit Test"
-                                       rails-model-layout:switch-to-unit-test
-                                       :enable (and (not (eq (rails-core:buffer-type) :unit-test))
-                                                    (rails-core:unit-test-exist-p (or (rails-core:current-model)
+        ([goto-utest]      '(menu-item "Go to Models Test"
+                                       rails-model-layout:switch-to-models-test
+                                       :enable (and (not (eq (rails-core:buffer-type) :models-test))
+                                                    (rails-core:models-test-exist-p (or (rails-core:current-model)
                                                                                       (rails-core:current-mailer))))))
         ([goto-rspec]      '(menu-item "Go to RSpec"
                                        rails-model-layout:switch-to-rspec-model
@@ -66,7 +66,7 @@
                                        :enable (rails-core:mailer-exist-p (rails-core:current-mailer)))))
       (define-keys map
         ((rails-key "m")         'rails-model-layout:switch-to-model)
-        ((rails-key "u")         'rails-model-layout:switch-to-unit-test)
+        ((rails-key "u")         'rails-model-layout:switch-to-models-test)
         ((rails-key "r")         'rails-model-layout:switch-to-rspec-model)
         ((rails-key "g")         'rails-model-layout:switch-to-migration)
         ((rails-key "c")         'rails-model-layout:switch-to-controller)
@@ -87,7 +87,7 @@
                  (:controller (rails-core:controller-file-by-model model))
                  (:fixture (rails-core:fixture-file model))
                  (:rspec-fixture (rails-core:rspec-fixture-file model))
-                 (:unit-test (rails-core:unit-test-file item))
+                 (:models-test (rails-core:models-test-file item))
                  (:rspec-model (rails-core:rspec-model-file item))
                  (:model (rails-core:model-file model))
                  (:migration (rails-core:migration-file-by-model model)))))
@@ -100,7 +100,7 @@
 (defun rails-model-layout:switch-to-controller () (interactive) (rails-model-layout:switch-to :controller))
 (defun rails-model-layout:switch-to-fixture () (interactive) (rails-model-layout:switch-to :fixture))
 (defun rails-model-layout:switch-to-rspec-fixture () (interactive) (rails-model-layout:switch-to :rspec-fixture))
-(defun rails-model-layout:switch-to-unit-test () (interactive) (rails-model-layout:switch-to :unit-test))
+(defun rails-model-layout:switch-to-models-test () (interactive) (rails-model-layout:switch-to :models-test))
 (defun rails-model-layout:switch-to-rspec-model () (interactive) (rails-model-layout:switch-to :rspec-model))
 (defun rails-model-layout:switch-to-model () (interactive) (rails-model-layout:switch-to :model))
 (defun rails-model-layout:switch-to-migration () (interactive) (rails-model-layout:switch-to :migration))
@@ -123,8 +123,8 @@
         (add-to-list 'item (cons "RSpec Fixture" :rspec-fixture)))
       (when (rails-core:controller-exist-p controller)
         (add-to-list 'item (cons "Controller" :controller)))
-      (unless (eq type :unit-test)
-        (add-to-list 'item (cons "Unit Test" :unit-test)))
+      (unless (eq type :models-test)
+        (add-to-list 'item (cons "Models Test" :models-test)))
       (unless (eq type :rspec-model)
         (add-to-list 'item (cons "RSpec" :rspec-model)))
       (unless (eq type :model)

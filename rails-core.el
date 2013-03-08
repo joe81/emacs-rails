@@ -35,10 +35,11 @@
     "app/helpers"
     "app/mailers"
     "app/assets"
-    "test/unit"
-    "test/functional"
     "test/fixtures"
+    "test/controllers"
+    "test/mailers"
     "test/integration"
+    "test/models"
     "spec/controllers"
     "spec/requests"
     "spec/fixtures"
@@ -51,7 +52,7 @@
 
 (defun rails-core:class-by-file (filename)
   "Return the class associated with FILENAME.
-   <rails-root>/(app/assets|app/mailers|app/models|app/controllers|app/helpers|test/unit|test/functional|test/integration|lib|spec/controllers|spec/lib|spec/models)/foo/bar_baz
+   <rails-root>/(app/assets|app/mailers|app/models|app/controllers|app/helpers|test/models|test/controllers|test/mailers|test/integration|lib|spec/controllers|spec/lib|spec/models)/foo/bar_baz
                 --> Foo::BarBaz"
   (let* ((case-fold-search nil)
          (path (replace-regexp-in-string
@@ -269,14 +270,14 @@ CONTROLLER."
 
 (defun rails-core:helper-test-file (controller)
   (when controller
-    (format "test/unit/helpers/%s_helper_test.rb" (rails-core:file-by-class controller t))))
-(assert (string= "test/unit/helpers/foo/bar_quux_helper_test.rb" (rails-core:helper-test-file "Foo::BarQuux")))
+    (format "test/helpers/%s_helper_test.rb" (rails-core:file-by-class controller t))))
+(assert (string= "test/helpers/foo/bar_quux_helper_test.rb" (rails-core:helper-test-file "Foo::BarQuux")))
 
-(defun rails-core:functional-test-file (controller)
-  "Return the functional test file name for the controller named
+(defun rails-core:controllers-test-file (controller)
+  "Return the controllers test file name for the controller named
 CONTROLLER."
   (when controller
-    (format "test/functional/%s_test.rb"
+    (format "test/controllers/%s_test.rb"
             (rails-core:file-by-class (rails-core:long-controller-name controller) t))))
 
 (defun rails-core:integration-test-file (integration)
@@ -293,14 +294,14 @@ CONTROLLER."
     (format "app/mailers/%s.rb"
             (rails-core:file-by-class mailer t))))
 
-(defun rails-core:unit-test-file (model)
-  "Return the unit test file name for the model named MODEL."
+(defun rails-core:models-test-file (model)
+  "Return the models test file name for the model named MODEL."
   (when model
-    (format "test/unit/%s_test.rb" (rails-core:file-by-class model t))))
+    (format "test/models/%s_test.rb" (rails-core:file-by-class model t))))
 
-(defun rails-core:unit-test-exist-p (model)
-  "Return the unit test file name for the model named MODEL."
-  (let ((test (rails-core:unit-test-file model)))
+(defun rails-core:models-test-exist-p (model)
+  "Return the models test file name for the model named MODEL."
+  (let ((test (rails-core:models-test-file model)))
     (when test
       (file-exists-p (rails-core:file test)))))
 
@@ -426,13 +427,13 @@ suffix if CUT-CONTOLLER-SUFFIX is non nil."
                       controller))
     (directory-files-recursive (rails-core:file "app/controllers/") nil "\\.rb$"))))
 
-(defun rails-core:functional-tests ()
-  "Return a list of Rails functional tests."
+(defun rails-core:controllers-tests ()
+  "Return a list of Rails controllers tests."
   (mapcar
    #'(lambda(it)
        (remove-postfix (rails-core:class-by-file it)
                        "ControllerTest"))
-   (directory-files-recursive (rails-core:file "test/functional/") nil "\\.rb$")))
+   (directory-files-recursive (rails-core:file "test/controllers/") nil "\\.rb$")))
 
 (defun rails-core:integration-tests ()
   "Return a list of Rails integration tests."
@@ -473,13 +474,13 @@ suffix if CUT-CONTOLLER-SUFFIX is non nil."
     (format "app/mailers/%s.rb"
             (rails-core:file-by-class filename t))))
 
-(defun rails-core:unit-tests ()
-  "Return a list of Rails functional tests."
+(defun rails-core:models-tests ()
+  "Return a list of Rails model tests."
   (mapcar
    #'(lambda(it)
        (remove-postfix (rails-core:class-by-file it)
                        "Test"))
-   (directory-files-recursive (rails-core:file "test/unit/") nil "\\.rb$")))
+   (directory-files-recursive (rails-core:file "test/models/") nil "\\.rb$")))
 
 (defun rails-core:observers ()
   "Return a list of Rails observers."
@@ -633,7 +634,7 @@ If the action is nil, return all views for the controller."
         (:view (rails-core:class-by-file
                 (directory-file-name (directory-of-file (buffer-file-name)))))
         (:helper (remove-postfix file-class "Helper"))
-        (:functional-test (remove-postfix file-class "ControllerTest"))
+        (:controllers-test (remove-postfix file-class "ControllerTest"))
         (:rspec-controller (remove-postfix file-class "Spec"))))))
 
 (defun rails-core:current-model ()
@@ -643,7 +644,7 @@ If the action is nil, return all views for the controller."
       (case (rails-core:buffer-type)
         (:migration (rails-core:model-by-migration-filename (buffer-name)))
         (:model file-class)
-        (:unit-test (remove-postfix file-class "Test"))
+        (:models-test (remove-postfix file-class "Test"))
         (:fixture (singularize-string file-class))
         (:rspec-fixture (singularize-string file-class))
         (:rspec-model (remove-postfix file-class "Spec"))))))
@@ -662,7 +663,7 @@ If the action is nil, return all views for the controller."
          (test (remove-postfix file-class "Test"))
          (mailer-class (case (rails-core:buffer-type)
                          (:mailer    file-class)
-                         (:unit-test test)
+                         (:models-test test)
                          (:view      (rails-core:class-by-file
                                       (directory-file-name (directory-of-file (buffer-file-name))))))))
     (and (rails-core:mailer-p mailer-class) mailer-class)))

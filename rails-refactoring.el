@@ -81,7 +81,7 @@ project.  This includes all the files in the 'app', 'config',
   "Return corresponding class/module name for given FILE."
   (let ((path (find-if (lambda (path) (string-match (concat "^" (regexp-quote path)) file))
                        '("app/models/" "app/controllers/" "app/helpers/" "lib/"
-                         "test/unit/helpers/" "test/unit/" "test/functional/"
+                         "test/models/helpers/" "test/models/" "test/controllers/"
                          "spec/models/" "spec/controllers/" "spec/helpers/ spec/lib/"))))
     (when path
       (rails-refactoring:camelize
@@ -90,8 +90,8 @@ project.  This includes all the files in the 'app', 'config',
 (assert (string= "FooBar" (rails-refactoring:class-from-file "app/models/foo_bar.rb")))
 (assert (string= "Foo::BarController" (rails-refactoring:class-from-file "app/controllers/foo/bar_controller.rb")))
 (assert (string= "Foo::Bar::Quux" (rails-refactoring:class-from-file "lib/foo/bar/quux.rb")))
-(assert (string= "FooTest" (rails-refactoring:class-from-file "test/unit/foo_test.rb")))
-(assert (string= "FooHelperTest" (rails-refactoring:class-from-file "test/unit/helpers/foo_helper_test.rb")))
+(assert (string= "FooTest" (rails-refactoring:class-from-file "test/models/foo_test.rb")))
+(assert (string= "FooHelperTest" (rails-refactoring:class-from-file "test/models/helpers/foo_helper_test.rb")))
 
 (defun rails-refactoring:legal-class-name-p (name)
   "Return t when NAME is a valid Ruby class name."
@@ -238,7 +238,7 @@ started to do the rest."
           (when (file-exists-p (rails-core:file (funcall func from)))
             (rails-refactoring:rename-class (funcall func from)
                                             (funcall func to))))
-        '(rails-core:controller-file rails-core:functional-test-file rails-core:rspec-controller-file
+        '(rails-core:controller-file rails-core:controllers-test-file rails-core:rspec-controller-file
                                      rails-core:helper-file rails-core:helper-test-file))
 
   (when (file-exists-p (rails-core:file (rails-core:views-dir from)))
@@ -257,14 +257,14 @@ started to do the rest."
                                      '("app/controllers/"
                                        "app/helpers/"
                                        "app/views/"
-                                       "test/functional/"
+                                       "test/controllers/"
                                        "spec/controllers/"))
       (rails-refactoring:query-replace (concat "\\b\\(:?\\)" (regexp-quote (rails-refactoring:decamelize from)) "\\b")
                                        (concat "\\1" (rails-refactoring:decamelize to))
                                        '("app/controllers/"
                                          "app/helpers/"
                                          "app/views/"
-                                         "test/functional/"
+                                         "test/controllers/"
                                          "spec/controllers/"
                                          "config/routes.rb")))
     (save-some-buffers)))
@@ -284,7 +284,7 @@ the rest."
           (when (file-exists-p (rails-core:file (funcall func from)))
             (rails-refactoring:rename-class (funcall func from)
                                             (funcall func to))))
-        '(rails-core:model-file rails-core:unit-test-file rails-core:rspec-model-file))
+        '(rails-core:model-file rails-core:models-test-file rails-core:rspec-model-file))
 
   (mapc (lambda (func)
           (when (file-exists-p (rails-core:file (funcall func from)))

@@ -95,13 +95,21 @@
    "Go to libs.."
    'rails-core:lib-file))
 
-(defun rails-nav:goto-functional-tests ()
-  "Go to functional tests."
+(defun rails-nav:goto-mailers-tests ()
+  "Go to mailers tests."
   (interactive)
   (rails-nav:goto-file-with-menu-from-list
-   (rails-core:functional-tests)
-   "Go to functional test.."
-   'rails-core:functional-test-file))
+   (rails-core:mailers-tests)
+   "Go to mailers test.."
+   'rails-core:mailers-test-file))
+
+(defun rails-nav:goto-controllers-tests ()
+  "Go to controllers tests."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:controllers-tests)
+   "Go to controllers test.."
+   'rails-core:controllers-test-file))
 
 (defun rails-nav:goto-integration-tests ()
   "Go to integration tests."
@@ -111,13 +119,13 @@
    "Go to integration test.."
    'rails-core:integration-test-file))
 
-(defun rails-nav:goto-unit-tests ()
-  "Go to functional tests."
+(defun rails-nav:goto-models-tests ()
+  "Go to models tests."
   (interactive)
   (rails-nav:goto-file-with-menu-from-list
-   (rails-core:unit-tests)
-   "Go to unit test.."
-   'rails-core:unit-test-file))
+   (rails-core:models-tests)
+   "Go to models test.."
+   'rails-core:models-test-file))
 
 (defun rails-nav:goto-observers ()
   "Go to observers."

@@ -64,7 +64,7 @@
        (if action-name
            (rails-controller-layout:switch-to-view controller-name action-name)
         (if (rails-core:spec-exist-p) (rails-controller-layout:switch-to :rspec-controller)
-           (rails-controller-layout:switch-to :functional-test)))))))
+           (rails-controller-layout:switch-to :controllers-test)))))))
 
 (defun rails-controller-layout:create-view-for-action (controller-name action-name)
   (let ((type
@@ -127,10 +127,10 @@ If the action is nil, return all views for the controller."
                                        rails-controller-layout:switch-to-helper
                                        :enable (and (not (rails-core:current-mailer))
                                                     (not (eq (rails-core:buffer-type) :helper)))))
-        ([goto-ftest]      '(menu-item "Go to Functional Test"
-                                       rails-controller-layout:switch-to-functional-test
+        ([goto-ftest]      '(menu-item "Go to Controllers Test"
+                                       rails-controller-layout:switch-to-controllers-test
                                        :enable (and (not (rails-core:current-mailer))
-                                                    (not (eq (rails-core:buffer-type) :functional-test)))))
+                                                    (not (eq (rails-core:buffer-type) :controllers-test)))))
         ([goto-rspec-controller] '(menu-item "Go to RSpec"
                                        rails-controller-layout:switch-to-rspec-controller
                                        :enable (not (eq (rails-core:buffer-type) :rspec-controller))))
@@ -138,16 +138,16 @@ If the action is nil, return all views for the controller."
                                        rails-controller-layout:switch-to-controller
                                        :enable (and (not (rails-core:current-mailer))
                                                     (not (eq (rails-core:buffer-type) :controller)))))
-        ([goto-utest]      '(menu-item "Go to Unit Test"
-                                       rails-controller-layout:switch-to-unit-test
+        ([goto-utest]      '(menu-item "Go to Models Test"
+                                       rails-controller-layout:switch-to-models-test
                                        :enable (rails-core:current-mailer))))
       (define-keys map
         ((rails-key "g") 'rails-controller-layout:switch-to-migration)
         ((rails-key "m") 'rails-controller-layout:switch-to-model)
         ((rails-key "h") 'rails-controller-layout:switch-to-helper)
-        ((rails-key "f") 'rails-controller-layout:switch-to-functional-test)
+        ((rails-key "f") 'rails-controller-layout:switch-to-controllers-test)
         ((rails-key "c") 'rails-controller-layout:switch-to-controller)
-        ((rails-key "u") 'rails-controller-layout:switch-to-unit-test)
+        ((rails-key "u") 'rails-controller-layout:switch-to-models-test)
         ((rails-key "r") 'rails-controller-layout:switch-to-rspec-controller)
         ([menu-bar rails-controller-layout] (cons name menu))))
     map))
@@ -159,11 +159,11 @@ If the action is nil, return all views for the controller."
          (mailer (rails-core:current-mailer))
          (item (case type
                  (:helper (rails-core:helper-file controller))
-                 (:functional-test (rails-core:functional-test-file controller))
+                 (:controllers-test (rails-core:controllers-test-file controller))
                  (:rspec-controller (rails-core:rspec-controller-file controller))
                  (:controller (rails-core:controller-file controller))
                  (:model (rails-core:model-file model))
-                 (:unit-test (rails-core:unit-test-file mailer))
+                 (:models-test (rails-core:models-test-file mailer))
                  (:migration (rails-core:migration-file-by-model model)))))
     (if item
       (find-or-ask-to-create (format "%s does not exists do you want to create it? " item)
@@ -171,12 +171,12 @@ If the action is nil, return all views for the controller."
       (message "%s not found" name))))
 
 (defun rails-controller-layout:switch-to-helper () (interactive) (rails-controller-layout:switch-to :helper))
-(defun rails-controller-layout:switch-to-functional-test () (interactive) (rails-controller-layout:switch-to :functional-test))
+(defun rails-controller-layout:switch-to-controllers-test () (interactive) (rails-controller-layout:switch-to :controllers-test))
 (defun rails-controller-layout:switch-to-rspec-controller () (interactive) (rails-controller-layout:switch-to :rspec-controller))
 (defun rails-controller-layout:switch-to-controller () (interactive) (rails-controller-layout:switch-to :controller))
 (defun rails-controller-layout:switch-to-model () (interactive) (rails-controller-layout:switch-to :model))
 (defun rails-controller-layout:switch-to-migration () (interactive) (rails-controller-layout:switch-to :migration))
-(defun rails-controller-layout:switch-to-unit-test () (interactive) (rails-controller-layout:switch-to :unit-test))
+(defun rails-controller-layout:switch-to-models-test () (interactive) (rails-controller-layout:switch-to :models-test))
 
 (defun rails-controller-layout:menu ()
   (interactive)
@@ -195,14 +195,14 @@ If the action is nil, return all views for the controller."
         (add-to-list 'item (cons "Model" :model)))
       (unless (eq type :helper)
         (add-to-list 'item (cons "Helper" :helper)))
-      (unless (eq type :functional-test)
-        (add-to-list 'item (cons "Functional Test" :functional-test)))
+      (unless (eq type :controllers-test)
+        (add-to-list 'item (cons "Controllers Test" :controllers-test)))
       (unless (eq type :rspec-controller)
         (add-to-list 'item (cons "RSpec" :rspec-controller)))
       (unless (eq type :controller)
         (add-to-list 'item (cons "Controller" :controller))))
     (when mailer
-      (add-to-list 'item (cons "Unit Test" (rails-core:unit-test-file mailer)))
+      (add-to-list 'item (cons "Models Test" (rails-core:models-test-file mailer)))
       (when (eq type :view)
         (add-to-list 'item (cons "Mailer" (rails-core:mailer-file mailer)))))
     (setq item

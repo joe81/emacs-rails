@@ -30,7 +30,7 @@
   "Minor mode for RubyOnRails fixtures."
   :lighter " Fixture"
   :keymap (rails-model-layout:keymap :fixture)
-  (setq rails-primary-switch-func 'rails-model-layout:switch-to-unit-test)
+  (setq rails-primary-switch-func 'rails-model-layout:switch-to-models-test)
   (setq rails-secondary-switch-func 'rails-model-layout:menu))
 
 (provide 'rails-fixture-minor-mode)

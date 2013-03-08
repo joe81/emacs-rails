@@ -14,7 +14,7 @@
                                                   (rails-core:rspec-lib-exist-p (rails-core:current-lib))))))
       (define-keys map
         ((rails-key "l")         'rails-lib-layout:switch-to-lib)
-        ((rails-key "r")         'rails-lib-layout:switch-to-unit-test)
+        ((rails-key "r")         'rails-lib-layout:switch-to-models-test)
         ([menu-bar rails-lib-layout] (cons name menu))))
     map))
 

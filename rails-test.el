@@ -234,13 +234,13 @@ Used when it's determined that the output buffer needs to be shown."
   (let* ((model (rails-core:current-model))
          (controller (rails-core:current-controller))
          (mailer (rails-core:current-mailer))
-         (func-test (rails-core:functional-test-file controller))
-         (unit-test (rails-core:unit-test-file model))
-         (mailer-test (rails-core:unit-test-file mailer)))
+         (func-test (rails-core:controllers-test-file controller))
+         (models-test (rails-core:models-test-file model))
+         (mailer-test (rails-core:models-test-file mailer)))
     (rails-test:run-single-file
      (cond
       ;; model
-      ((and model unit-test) unit-test)
+      ((and model models-test) models-test)
       ;; controller
       ((and controller (not (rails-core:mailer-p controller)) func-test)
        func-test)
@@ -279,14 +279,14 @@ Used when it's determined that the output buffer needs to be shown."
   "Run Integration Tests."
   (interactive)
   (rails-test:run "integration"))
-(defun rails-test:run-units ()
-  "Run Unit Tests."
+(defun rails-test:run-models ()
+  "Run Models Tests."
   (interactive)
-  (rails-test:run "units"))
-(defun rails-test:run-functionals ()
-  "Run Functional Tests."
+  (rails-test:run "models"))
+(defun rails-test:run-controllers ()
+  "Run Controllers Tests."
   (interactive)
-  (rails-test:run "functionals"))
+  (rails-test:run "controllers"))
 (defun rails-test:run-recent ()
   "Run Recent Tests."
   (interactive)

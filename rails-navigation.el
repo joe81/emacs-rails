@@ -95,6 +95,14 @@
    "Go to libs.."
    'rails-core:lib-file))
 
+(defun rails-nav:goto-decorators ()
+  "Go to decorators.."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:decorators)
+   "Go to decorators.."
+   'rails-core:decorator-file))
+
 (defun rails-nav:goto-mailers-tests ()
   "Go to mailers tests."
   (interactive)
@@ -126,6 +134,14 @@
    (rails-core:models-tests)
    "Go to models test.."
    'rails-core:models-test-file))
+
+(defun rails-nav:goto-decorators-tests ()
+  "Go to decorators tests."
+  (interactive)
+  (rails-nav:goto-file-with-menu-from-list
+   (rails-core:decorators-tests)
+   "Go to decorators test.."
+   'rails-core:decorators-test-file))
 
 (defun rails-nav:goto-observers ()
   "Go to observers."

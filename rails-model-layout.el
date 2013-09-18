@@ -53,6 +53,9 @@
         ([goto-controller] '(menu-item "Go to Controller"
                                        rails-model-layout:switch-to-controller
                                        :enable (rails-core:controller-file-by-model (rails-core:current-model))))
+        ([goto-decorator] '(menu-item "Go to Decorator"
+                                       rails-model-layout:switch-to-decorator
+                                       :enable (rails-core:decorator-file-by-model (rails-core:current-model))))
         ([goto-fixture]    '(menu-item "Go to Fixture"
                                        rails-model-layout:switch-to-fixture
                                        :enable (and (not (eq (rails-core:buffer-type) :fixture))
@@ -70,6 +73,7 @@
         ((rails-key "r")         'rails-model-layout:switch-to-rspec-model)
         ((rails-key "g")         'rails-model-layout:switch-to-migration)
         ((rails-key "c")         'rails-model-layout:switch-to-controller)
+        ((rails-key "d")         'rails-model-layout:switch-to-decorator)
         ((rails-key "x")         'rails-model-layout:switch-to-fixture)
         ((rails-key "z")         'rails-model-layout:switch-to-rspec-fixture)
         ((rails-key "n")         'rails-model-layout:switch-to-mailer)
@@ -90,6 +94,7 @@
                  (:models-test (rails-core:models-test-file item))
                  (:rspec-model (rails-core:rspec-model-file item))
                  (:model (rails-core:model-file model))
+                 (:decorator (rails-core:decorator-file-by-model model))
                  (:migration (rails-core:migration-file-by-model model)))))
     (if item
       (find-or-ask-to-create (format "%s does not exists do you want to create it? " item)
@@ -104,6 +109,7 @@
 (defun rails-model-layout:switch-to-rspec-model () (interactive) (rails-model-layout:switch-to :rspec-model))
 (defun rails-model-layout:switch-to-model () (interactive) (rails-model-layout:switch-to :model))
 (defun rails-model-layout:switch-to-migration () (interactive) (rails-model-layout:switch-to :migration))
+(defun rails-model-layout:switch-to-decorator () (interactive) (rails-model-layout:switch-to :decorator))
 
 (defun rails-model-layout:menu ()
   (interactive)
@@ -123,6 +129,8 @@
         (add-to-list 'item (cons "RSpec Fixture" :rspec-fixture)))
       (when (rails-core:controller-exist-p controller)
         (add-to-list 'item (cons "Controller" :controller)))
+      (when (rails-core:decorator-exist-p decorator)
+        (add-to-list 'item (cons "Decorator" :decorator)))
       (unless (eq type :models-test)
         (add-to-list 'item (cons "Models Test" :models-test)))
       (unless (eq type :rspec-model)

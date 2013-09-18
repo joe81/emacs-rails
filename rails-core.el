@@ -32,6 +32,7 @@
   '("app/controllers"
     "app/views"
     "app/models"
+    "app/decorators"
     "app/helpers"
     "app/mailers"
     "app/assets"
@@ -40,6 +41,7 @@
     "test/mailers"
     "test/integration"
     "test/models"
+    "test/decorators"
     "spec/controllers"
     "spec/requests"
     "spec/fixtures"
@@ -52,7 +54,7 @@
 
 (defun rails-core:class-by-file (filename)
   "Return the class associated with FILENAME.
-   <rails-root>/(app/assets|app/mailers|app/models|app/controllers|app/helpers|test/models|test/controllers|test/mailers|test/integration|lib|spec/controllers|spec/lib|spec/models)/foo/bar_baz
+   <rails-root>/(app/decorators|app/assets|app/mailers|app/models|app/controllers|app/helpers|test/models|test/decorators|test/controllers|test/mailers|test/integration|lib|spec/controllers|spec/lib|spec/models)/foo/bar_baz
                 --> Foo::BarBaz"
   (let* ((case-fold-search nil)
          (path (replace-regexp-in-string
@@ -156,6 +158,23 @@ it does not exist, ask to create it using QUESTION as a prompt."
      (rails-core:file
       (rails-core:controller-file controller-name)))))
 
+(defun rails-core:decorator-file (decorator-name)
+  "Return the path to the decorator DECORATOR-NAME."
+  (when decorator-name
+    (let* ((basename (rails-core:file-by-class (rails-core:short-decorator-name decorator-name) t))
+	   (exact (concat "app/decorators/" basename ".rb")))
+      (if (file-exists-p (rails-core:file exact))
+	exact
+	(concat "app/decorators/" basename "_decorator.rb")))))
+
+(defun rails-core:decorator-exist-p (decorator-name)
+  "Return t if decorator DECORATOR-NAME exist."
+  (when decorator-name
+    (file-exists-p
+     (rails-core:file
+      (rails-core:decorator-file decorator-name)))))
+
+
 (defun rails-core:controller-file-by-model (model)
   (when model
     (let* ((controller (pluralize-string model)))
@@ -176,6 +195,10 @@ it does not exist, ask to create it using QUESTION as a prompt."
                                 (string= (cadr x) (rails-core:strip-namespace y)))))))))))
       (when controller
         (rails-core:controller-file controller)))))
+
+(defun rails-core:decorator-file-by-model (model)
+  (when model
+    (rails-core:decorator-file (rails-core:long-decorator-name (rails-core:strip-namespace model)))))
 
 (defun rails-core:observer-file (observer-name)
   "Return the path to the observer OBSERVER-NAME."
@@ -280,6 +303,13 @@ CONTROLLER."
     (format "test/controllers/%s_test.rb"
             (rails-core:file-by-class (rails-core:long-controller-name controller) t))))
 
+(defun rails-core:decorators-test-file (decorator)
+  "Return the decorators test file name for the decorator named
+DECORATOR."
+  (when decorator
+    (format "test/decorators/%s_test.rb"
+            (rails-core:file-by-class (rails-core:long-decorator-name decorator) t))))
+
 (defun rails-core:integration-test-file (integration)
   "Return the integration test file name for the controller named
 CONTROLLER."
@@ -344,6 +374,28 @@ CONTROLLER."
   (if  (string-match "Controller$" controller)
       controller
     (concat controller "Controller")))
+
+(defun rails-core:decorator-name (decorator-file)
+  "Return the class name of the decorator named DECORATOR.
+   Bar in Foo dir -> Foo::Bar"
+  (rails-core:class-by-file
+   (if (eq (elt decorator-file 0) 47) ;;; 47 == '/'
+       (subseq decorator-file 1)
+     (let ((current-decorator (rails-core:current-decorator)))
+       (if (string-match ":" current-decorator)
+     (concat (replace-regexp-in-string "[^:]*$" "" current-decorator)
+       decorator-file)
+   decorator-file)))))
+
+(defun rails-core:short-decorator-name (decorator)
+  "Convert FooDecorator -> Foo."
+  (remove-postfix  decorator "Decorator" ))
+
+(defun rails-core:long-decorator-name (decorator)
+  "Convert Foo/FooDecorator -> FooDecorator."
+  (if (string-match "Decorator$" decorator)
+      decorator
+    (concat decorator "Decorator")))
 
 (defun rails-core:rspec-controller-files (controller)
   "Return the controller spec file name for the controller named
@@ -435,6 +487,14 @@ suffix if CUT-CONTOLLER-SUFFIX is non nil."
                        "ControllerTest"))
    (directory-files-recursive (rails-core:file "test/controllers/") nil "\\.rb$")))
 
+(defun rails-core:decorators-tests ()
+  "Return a list of Rails decorators tests."
+  (mapcar
+   #'(lambda(it)
+       (remove-postfix (rails-core:class-by-file it)
+                       "DecoratorTest"))
+   (directory-files-recursive (rails-core:file "test/decorators/") nil "\\.rb$")))
+
 (defun rails-core:integration-tests ()
   "Return a list of Rails integration tests."
   (mapcar
@@ -447,20 +507,13 @@ suffix if CUT-CONTOLLER-SUFFIX is non nil."
   "Return a list of Rails models."
   (mapcar
    #'rails-core:class-by-file
-   (delete-if
-    #'(lambda (file) (or (rails-core:observer-p file)
-                         (rails-core:mailer-p file)))
-    (directory-files-recursive (rails-core:file "app/models/") nil "\\.rb$"))))
+   (directory-files-recursive (rails-core:file "app/models/") nil "\\.rb$")))
 
 (defun rails-core:libs ()
-  "Return a list of file in libs."
+  "Return a list of files in libs."
   (mapcar
    #'rails-core:class-by-file
    (directory-files-recursive (rails-core:file "lib/") nil "\\.rb$")))
-
-  ;; (mapcar
-  ;;  #'rails-core:class-by-file
-  ;;  (directory-files-recursive (rails-core:file "lib/") nil "\\.rb$"))))
 
 (defun rails-core:lib-file (filename)
   "todo: document that."
@@ -468,8 +521,20 @@ suffix if CUT-CONTOLLER-SUFFIX is non nil."
     (format "lib/%s.rb"
             (rails-core:file-by-class filename t))))
 
+(defun rails-core:decorators ()
+  "Return a list of files in app/decorators."
+  (mapcar
+   #'rails-core:class-by-file
+   (directory-files-recursive (rails-core:file "app/decorators/") nil "\\.rb$")))
+
+(defun rails-core:decorator-file (filename)
+  "Find decorator file."
+  (when filename
+    (format "app/decorators/%s.rb"
+            (rails-core:file-by-class filename t))))
+
 (defun rails-core:mailer-file (filename)
-  "todo: document that."
+  "Find Mailer file."
   (when filename
     (format "app/mailers/%s.rb"
             (rails-core:file-by-class filename t))))
@@ -648,6 +713,14 @@ If the action is nil, return all views for the controller."
         (:fixture (singularize-string file-class))
         (:rspec-fixture (singularize-string file-class))
         (:rspec-model (remove-postfix file-class "Spec"))))))
+
+(defun rails-core:current-decorator ()
+  "Return the current Rails decorator."
+  (let* ((file-class (rails-core:class-by-file (buffer-file-name))))
+    (unless (rails-core:mailer-p file-class)
+      (case (rails-core:buffer-type)
+        (:decorator (rails-core:short-decorator-name file-class))
+        (:decorators-test (remove-postfix file-class "DecoratorTest"))))))
 
 (defun rails-core:current-lib ()
   "Return the current lib."

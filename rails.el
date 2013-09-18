@@ -72,6 +72,7 @@
 (require 'rails-log)
 (require 'rails-ui)
 (require 'rails-model-layout)
+(require 'rails-decorator-layout)
 (require 'rails-controller-layout)
 (require 'rails-features)
 (require 'rails-lib-layout)
@@ -173,13 +174,15 @@ Emacs w3m browser."
     (:mailer           "app/models/" (lambda (file) (rails-core:mailer-p file)))
     (:model            "app/models/" (lambda (file) (and (not (rails-core:mailer-p file))
                                                          (not (rails-core:observer-p file)))))
+    (:decorator        "app/decorators/")
     (:helper           "app/helpers/")
-    (:models-test        "vendor/plugins/.*/test/") ; needs to appear before more-general :plugin
+    (:models-test      "vendor/plugins/.*/test/") ; needs to appear before more-general :plugin
     (:model            "vendor/plugins/.*/lib/") ; needs to appear before more-general :plugin
     (:plugin           "vendor/plugins/")
-    (:models-test        "test/models/")
-    (:controllers-test  "test/controllers/")
-    (:integration-test  "test/integration/")
+    (:models-test      "test/models/")
+    (:controllers-test "test/controllers/")
+    (:decorators-test  "test/decorators/")
+    (:integration-test "test/integration/")
     (:fixture          "test/fixtures/")
     (:lib              "lib")
     (:rspec-controller "spec/controllers")

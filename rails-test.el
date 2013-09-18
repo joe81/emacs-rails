@@ -229,23 +229,27 @@ Used when it's determined that the output buffer needs to be shown."
     (message "No previous single file test recorded.")))
 
 (defun rails-test:run-current ()
-  "Run a test for the current controller/model/mailer."
+  "Run a test for the current controller/model/mailer/decorator."
   (interactive)
   (let* ((model (rails-core:current-model))
          (controller (rails-core:current-controller))
          (mailer (rails-core:current-mailer))
-         (func-test (rails-core:controllers-test-file controller))
+         (decorator (rails-core:current-decorator))
+         (controllers-test (rails-core:controllers-test-file controller))
          (models-test (rails-core:models-test-file model))
          (mailer-test (rails-core:models-test-file mailer)))
+         (decorators-test (rails-core:decorators-test-file decorator))
     (rails-test:run-single-file
      (cond
       ;; model
       ((and model models-test) models-test)
       ;; controller
-      ((and controller (not (rails-core:mailer-p controller)) func-test)
-       func-test)
+      ((and controller (not (rails-core:mailer-p controller)) controllers-test)
+       controllers-test)
       ;; mailer
       ((and mailer mailer-test) mailer-test)
+      ;; decorator
+      ((and decorator decorators-test) decorators-test)
       ;; otherwise...
       (t (if (string-match "test.*\\.rb" (buffer-file-name))
              (buffer-file-name)
@@ -287,6 +291,10 @@ Used when it's determined that the output buffer needs to be shown."
   "Run Controllers Tests."
   (interactive)
   (rails-test:run "controllers"))
+(defun rails-test:run-decorators ()
+  "Run Decorators Tests."
+  (interactive)
+  (rails-test:run "decorators"))
 (defun rails-test:run-recent ()
   "Run Recent Tests."
   (interactive)

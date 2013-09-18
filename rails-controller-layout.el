@@ -120,13 +120,15 @@ If the action is nil, return all views for the controller."
                                                      (singularize-string (rails-core:current-controller))))))
         ([goto-model]      '(menu-item "Go to Model"
                                        rails-controller-layout:switch-to-model
-                                       :enable (and (not (rails-core:current-mailer))
-                                                    (rails-core:model-exist-p
+                                       :enable (and (rails-core:model-exist-p
+                                                     (singularize-string (rails-core:current-controller))))))
+        ([goto-decorator]  '(menu-item "Go to Decorator"
+                                       rails-controller-layout:switch-to-decorator
+                                       :enable (and (rails-core:decorator-exist-p
                                                      (singularize-string (rails-core:current-controller))))))
         ([goto-helper]     '(menu-item "Go to Helper"
                                        rails-controller-layout:switch-to-helper
-                                       :enable (and (not (rails-core:current-mailer))
-                                                    (not (eq (rails-core:buffer-type) :helper)))))
+                                       :enable (and (not (eq (rails-core:buffer-type) :helper)))))
         ([goto-ftest]      '(menu-item "Go to Controllers Test"
                                        rails-controller-layout:switch-to-controllers-test
                                        :enable (and (not (rails-core:current-mailer))
@@ -145,6 +147,7 @@ If the action is nil, return all views for the controller."
         ((rails-key "g") 'rails-controller-layout:switch-to-migration)
         ((rails-key "m") 'rails-controller-layout:switch-to-model)
         ((rails-key "h") 'rails-controller-layout:switch-to-helper)
+        ((rails-key "d") 'rails-controller-layout:switch-to-decorator)
         ((rails-key "f") 'rails-controller-layout:switch-to-controllers-test)
         ((rails-key "c") 'rails-controller-layout:switch-to-controller)
         ((rails-key "u") 'rails-controller-layout:switch-to-models-test)
@@ -164,6 +167,7 @@ If the action is nil, return all views for the controller."
                  (:controller (rails-core:controller-file controller))
                  (:model (rails-core:model-file model))
                  (:models-test (rails-core:models-test-file mailer))
+                 (:decorator (rails-core:decorator-file-by-model model))
                  (:migration (rails-core:migration-file-by-model model)))))
     (if item
       (find-or-ask-to-create (format "%s does not exists do you want to create it? " item)
@@ -177,6 +181,7 @@ If the action is nil, return all views for the controller."
 (defun rails-controller-layout:switch-to-model () (interactive) (rails-controller-layout:switch-to :model))
 (defun rails-controller-layout:switch-to-migration () (interactive) (rails-controller-layout:switch-to :migration))
 (defun rails-controller-layout:switch-to-models-test () (interactive) (rails-controller-layout:switch-to :models-test))
+(defun rails-controller-layout:switch-to-decorator () (interactive) (rails-controller-layout:switch-to :decorator))
 
 (defun rails-controller-layout:menu ()
   (interactive)
@@ -193,6 +198,8 @@ If the action is nil, return all views for the controller."
         (when (rails-core:migration-file-by-model model)
           (add-to-list 'item (cons "Migration" :migration)))
         (add-to-list 'item (cons "Model" :model)))
+      (when (rails-core:decorator-exist-p decorator)
+        (add-to-list 'item (cons "Decorator" :decorator)))
       (unless (eq type :helper)
         (add-to-list 'item (cons "Helper" :helper)))
       (unless (eq type :controllers-test)

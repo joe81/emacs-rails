@@ -237,8 +237,8 @@ Used when it's determined that the output buffer needs to be shown."
          (decorator (rails-core:current-decorator))
          (controllers-test (rails-core:controllers-test-file controller))
          (models-test (rails-core:models-test-file model))
-         (mailer-test (rails-core:models-test-file mailer)))
-         (decorators-test (rails-core:decorators-test-file decorator))
+         (mailer-test (rails-core:models-test-file mailer))
+         (decorators-test (rails-core:decorators-test-file decorator)))
     (rails-test:run-single-file
      (cond
       ;; model

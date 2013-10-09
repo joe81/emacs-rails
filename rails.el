@@ -75,7 +75,6 @@
 (require 'rails-decorator-layout)
 (require 'rails-controller-layout)
 (require 'rails-features)
-(require 'rails-lib-layout)
 (require 'rails-shoulda)
 (require 'rails-refactoring)
 

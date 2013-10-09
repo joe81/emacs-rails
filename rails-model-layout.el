@@ -103,6 +103,7 @@
          (title (capitalize (substring (symbol-name type) 1)))
          (model (rails-core:current-model))
          (controller (pluralize-string model))
+         (decorator (rails-core:current-decorator))
          (mailer (rails-core:current-mailer)))
     (when model
       (when (and (not (eq type :migration))

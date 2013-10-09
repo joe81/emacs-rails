@@ -184,6 +184,7 @@ If the action is nil, return all views for the controller."
          (action (rails-core:current-action))
          (model (singularize-string controller))
          (mailer (rails-core:current-mailer))
+         (decorator (rails-core:current-decorator))
          (item (rails-controller-layout:views-menu (or controller mailer))))
     (add-to-list 'item (rails-core:menu-separator))
     (when controller

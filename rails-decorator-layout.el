@@ -101,7 +101,7 @@
         (add-to-list 'item (cons "Fixture" :fixture)))
       (when (rails-core:controller-exist-p controller)
         (add-to-list 'item (cons "Controller" :controller)))
-      (when (rails-core:decorator-exist-p decorator)
+      (when (rails-core:decorator-exist-p model)
         (add-to-list 'item (cons "Decorator" :decorator)))
       (unless (eq type :decorators-test)
         (add-to-list 'item (cons "Decorators Test" :decorators-test)))

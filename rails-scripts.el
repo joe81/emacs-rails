@@ -36,12 +36,12 @@
 
 (defvar rails-script:generate-params-list
   '("-f")
-  "Add parameters to script/generate.
+  "Add parameters to rails generate.
 For example -s to keep existing files and -c to add new files into svn.")
 
 (defvar rails-script:destroy-params-list
   '("-f")
-  "Add parameters to script/destroy.
+  "Add parameters to rails destroy.
 For example -c to remove files from svn.")
 
 (defvar rails-script:buffer-name "*ROutput*")
@@ -202,7 +202,7 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
 (defun rails-script:run-destroy (what &rest parameters)
   "Run the destroy script using WHAT and PARAMETERS."
   (rails-script:run rails-ruby-command
-                    (append (list (format "script/destroy %s"  what))
+                    (append (list (format "bin/rails destroy %s"  what))
                             parameters
                             rails-script:destroy-params-list)))
 
@@ -246,7 +246,7 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
 (defun rails-script:run-generate (what &rest parameters)
   "Run the generate script using WHAT and PARAMETERS."
   (rails-script:run rails-ruby-command
-                    (append (list (format "script/generate %s" what))
+                    (append (list (format "bin/rails generate %s" what))
                             parameters
                             rails-script:generate-params-list)))
 
@@ -319,12 +319,12 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
   (rails-project:with-root
    (root)
    (let ((buffer-name (format "rails-%s-%s" (rails-project:name) name)))
-     (if (file-exists-p (rails-core:file "script/rails"))
+     (if (file-exists-p (rails-core:file "bin/rails"))
        (apply #'run-ruby-in-buffer buffer-name
-              (rails-core:file "script/rails")
+              (rails-core:file "bin/rails")
               (cons script params))
        (apply #'run-ruby-in-buffer buffer-name
-              (rails-core:file (format "script/%s" script))
+              (rails-core:file (format "bin/%s" script))
               params))
      (setq ruby-buffer buffer-name))
    (rails-minor-mode t)))
@@ -351,4 +351,3 @@ BUFFER-MAJOR-MODE and process-sentinel SENTINEL."
   (rails-script:run-interactive "breakpointer" "breakpointer"))
 
 (provide 'rails-scripts)
-

@@ -115,15 +115,9 @@ using `rails-default-environment'."
           (format "-p %s -e %s start"
                   port
                   env)))
-   ((file-exists-p (rails-core:file "script/rails"))
+   ((file-exists-p (rails-core:file "bin/rails"))
     (list rails-ruby-command
-          (format "script/rails server -p %s -e %s"
-                  port
-                  env)))
-   (t
-    (list rails-ruby-command
-          (format "script/server %s -p %s -e %s"
-                  server-type
+          (format "bin/rails server -p %s -e %s"
                   port
                   env)))))
 

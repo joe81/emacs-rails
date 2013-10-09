@@ -218,7 +218,7 @@ Used when it's determined that the output buffer needs to be shown."
 	(test-name file))
     (if (string-match "\\([^/\\\\.]+\\)_test\.rb$" test-name)
 	(setq test-name (concat "test " (match-string-no-properties 1 test-name))))
-    (rails-script:run "ruby" (append (list "-Itest") param) 'rails-test:compilation-mode test-name)
+    (rails-script:run rails-ruby-command (append (list "-Itest") param) 'rails-test:compilation-mode test-name)
     (setq rails-test:previous-run-single-param param)))
 
 (defun rails-test:rerun-single ()

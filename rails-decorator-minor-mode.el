@@ -30,8 +30,7 @@
   "Minor mode for RubyOnRails decorators."
   :lighter " Decorator"
   :keymap (rails-decorator-layout:keymap :decorator)
-  (if (rails-core:spec-exist-p) (setq rails-primary-switch-func 'rails-decorator-layout:switch-to-rspec-decorator)
-      (setq rails-primary-switch-func 'rails-decorator-layout:switch-to-decorators-test))
+  (setq rails-primary-switch-func 'rails-decorator-layout:switch-to-decorators-test)
   (setq rails-secondary-switch-func 'rails-decorator-layout:menu))
 
 (provide 'rails-decorator-minor-mode)

@@ -64,7 +64,7 @@
 (defun rails-test:line-regexp (&optional append prepend)
   (concat
    append
-   "\\[?/?\\(\\(?:app\\|config\\|lib\\|test\\|spec\\|vendor\\)?/[^ \f\n\r\t\v]+?\\):\\([0-9]+\\)\\(?::in\s*`\\(.*?\\)'\\)?\\]?"
+   "\\[?/?\\(\\(?:app\\|config\\|lib\\|test\\|vendor\\)?/[^ \f\n\r\t\v]+?\\):\\([0-9]+\\)\\(?::in\s*`\\(.*?\\)'\\)?\\]?"
    prepend))
 
 (defun rails-test:error-regexp-alist ()
@@ -218,7 +218,8 @@ Used when it's determined that the output buffer needs to be shown."
 	(test-name file))
     (if (string-match "\\([^/\\\\.]+\\)_test\.rb$" test-name)
 	(setq test-name (concat "test " (match-string-no-properties 1 test-name))))
-    (rails-script:run "ruby" (append (list "-Itest") param) 'rails-test:compilation-mode test-name)
+    ;; (rails-script:run "ruby" (append (list "-Itest") param) 'rails-test:compilation-mode test-name)
+    (rails-script:run "~/.rvm/rubies/ruby-2.0.0-p0/bin/ruby" (append (list "-Itest") param) 'rails-test:compilation-mode test-name)
     (setq rails-test:previous-run-single-param param)))
 
 (defun rails-test:rerun-single ()

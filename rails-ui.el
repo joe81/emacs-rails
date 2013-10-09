@@ -85,11 +85,7 @@
       ([goto-controllers-tests] '("Go to Controllers Tests" . rails-nav:goto-controllers-tests))
       ([goto-integration-tests] '("Go to Integration Tests" . rails-nav:goto-integration-tests))
       ([goto-decorators-tests]  '("Go to Decorators Tests"  . rails-nav:goto-decorators-tests))
-      ([goto-controllers]       '("Go to Controllers"       . rails-nav:goto-controllers))
-      ([goto-rspec-controllers] '("Go to RSpec Controllers" . rails-nav:goto-rspec-controllers))
-      ([goto-rspec-lib]         '("Go to RSpec Lib"         . rails-nav:goto-rspec-lib))
-      ([goto-rspec-models]      '("Go to RSpec Models"      . rails-nav:goto-rspec-models))
-      ([goto-rspec-fixtures]    '("Go to RSpec Fixtures"    . rails-nav:goto-rspec-fixtures)))
+      ([goto-controllers]       '("Go to Controllers"       . rails-nav:goto-controllers)))
     map))
 
 (defconst rails-minor-mode-tests-menu-bar-map
@@ -246,10 +242,6 @@
   ((rails-key "\C-c g t") 'rails-nav:goto-decorators-tests)
   ((rails-key "\C-c g i") 'rails-nav:goto-integration-tests)
   ((rails-key "\C-c g u") 'rails-nav:goto-models-tests)
-  ((rails-key "\C-c g r c") 'rails-nav:goto-rspec-controllers)
-  ((rails-key "\C-c g r f") 'rails-nav:goto-rspec-fixtures)
-  ((rails-key "\C-c g r l") 'rails-nav:goto-rspec-lib)
-  ((rails-key "\C-c g r m") 'rails-nav:goto-rspec-models)
 
   ;; Switch
   ((kbd "<M-S-up>")      'rails-lib:run-primary-switch)
@@ -290,13 +282,6 @@
   ((rails-key "\C-c f f") 'rails-find:fixtures)
   ((rails-key "\C-c f o") 'rails-find:config)
   ((rails-key "\C-c f a") 'rails-find:assets)
-  ;; Spec finds
-  ((rails-key "\C-c f r s") 'rails-find:spec)
-  ((rails-key "\C-c f r c") 'rails-find:spec-controllers)
-  ((rails-key "\C-c f r m") 'rails-find:spec-models)
-  ((rails-key "\C-c f r h") 'rails-find:spec-helpers)
-  ((rails-key "\C-c f r v") 'rails-find:spec-views)
-  ((rails-key "\C-c f r f") 'rails-find:spec-fixtures)
 
   ((rails-key "\C-c d m") 'rails-rake:migrate)
   ((rails-key "\C-c d v") 'rails-rake:migrate-to-version)
@@ -316,13 +301,6 @@
   ((rails-key "\C-c y d") 'rails-test:run-decorators)
   ((rails-key "\C-c #")   'rails-test:run-recent)
   ((rails-key "\C-c y a") 'rails-test:run-all)
-
-  ;; RSpec
-  ((rails-key "\C-c z f") 'rails-spec:run-files)
-  ((rails-key "\C-c z .") 'rails-spec:run-current)
-  ((rails-key "\C-c z a") 'rails-spec:run-all)
-  ((rails-key "\C-c z l") 'rails-spec:run-last)
-  ((rails-key "\C-c z s") 'rails-spec:run-this-spec)
 
   ;; Log files
   ((rails-key "\C-c l")    'rails-log:open)

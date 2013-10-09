@@ -71,7 +71,7 @@ project.  This includes all the files in the 'app', 'config',
                               (delete-if-not 'rails-refactoring:source-file-p
                                              (mapcar (lambda (f) (concat dirname f))
                                                      (directory-files-recursive (rails-core:file dirname))))))
-                 '("app/" "config/" "lib/" "test/" "spec/"))))
+                 '("app/" "config/" "lib/" "test/" ))))
 
 (defun rails-refactoring:class-files ()
   "Return list of all Ruby class files."
@@ -81,8 +81,7 @@ project.  This includes all the files in the 'app', 'config',
   "Return corresponding class/module name for given FILE."
   (let ((path (find-if (lambda (path) (string-match (concat "^" (regexp-quote path)) file))
                        '("app/models/" "app/controllers/" "app/helpers/" "lib/"
-                         "test/models/helpers/" "test/models/" "test/controllers/"
-                         "spec/models/" "spec/controllers/" "spec/helpers/ spec/lib/"))))
+                         "test/models/helpers/" "test/models/" "test/controllers/" ))))
     (when path
       (rails-refactoring:camelize
        (replace-regexp-in-string path "" (replace-regexp-in-string "\\.rb$" "" file))))))
@@ -238,7 +237,7 @@ started to do the rest."
           (when (file-exists-p (rails-core:file (funcall func from)))
             (rails-refactoring:rename-class (funcall func from)
                                             (funcall func to))))
-        '(rails-core:controller-file rails-core:controllers-test-file rails-core:rspec-controller-file
+        '(rails-core:controller-file rails-core:controllers-test-file
                                      rails-core:helper-file rails-core:helper-test-file))
 
   (when (file-exists-p (rails-core:file (rails-core:views-dir from)))
@@ -257,15 +256,13 @@ started to do the rest."
                                      '("app/controllers/"
                                        "app/helpers/"
                                        "app/views/"
-                                       "test/controllers/"
-                                       "spec/controllers/"))
+                                       "test/controllers/"))
       (rails-refactoring:query-replace (concat "\\b\\(:?\\)" (regexp-quote (rails-refactoring:decamelize from)) "\\b")
                                        (concat "\\1" (rails-refactoring:decamelize to))
                                        '("app/controllers/"
                                          "app/helpers/"
                                          "app/views/"
                                          "test/controllers/"
-                                         "spec/controllers/"
                                          "config/routes.rb")))
     (save-some-buffers)))
 
@@ -284,13 +281,13 @@ the rest."
           (when (file-exists-p (rails-core:file (funcall func from)))
             (rails-refactoring:rename-class (funcall func from)
                                             (funcall func to))))
-        '(rails-core:model-file rails-core:models-test-file rails-core:rspec-model-file))
+        '(rails-core:model-file rails-core:models-test-file))
 
   (mapc (lambda (func)
           (when (file-exists-p (rails-core:file (funcall func from)))
             (rename-file (rails-core:file (funcall func from))
                          (rails-core:file (funcall func to)))))
-        '(rails-core:fixture-file rails-core:rspec-fixture-file))
+        '(rails-core:fixture-file))
 
   (when (interactive-p)
     (let ((case-fold-search nil))

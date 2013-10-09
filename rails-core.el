@@ -42,11 +42,6 @@
     "test/integration"
     "test/models"
     "test/decorators"
-    "spec/controllers"
-    "spec/requests"
-    "spec/fixtures"
-    "spec/lib"
-    "spec/models"
     "lib")
   "Directories with Rails classes"
   :group 'rails
@@ -54,7 +49,7 @@
 
 (defun rails-core:class-by-file (filename)
   "Return the class associated with FILENAME.
-   <rails-root>/(app/decorators|app/assets|app/mailers|app/models|app/controllers|app/helpers|test/models|test/decorators|test/controllers|test/mailers|test/integration|lib|spec/controllers|spec/lib|spec/models)/foo/bar_baz
+   <rails-root>/(app/decorators|app/assets|app/mailers|app/models|app/controllers|app/helpers|test/models|test/decorators|test/controllers|test/mailers|test/integration|lib)/foo/bar_baz
                 --> Foo::BarBaz"
   (let* ((case-fold-search nil)
          (path (replace-regexp-in-string
@@ -397,60 +392,11 @@ CONTROLLER."
       decorator
     (concat decorator "Decorator")))
 
-(defun rails-core:rspec-controller-files (controller)
-  "Return the controller spec file name for the controller named
-CONTROLLER."
-  (if controller
-    (remove-if-not #'file-exists-p
-                   (mapcar (lambda (pattern)
-                             (rails-core:file (format pattern
-                                                      (rails-core:file-by-class controller t))))
-                           '("spec/controllers/%s_spec.rb"
-                             "spec/controllers/%s_controller_spec.rb"
-                             "spec/requests/%s_spec.rb")))))
-
-(defun rails-core:rspec-controller-file (controller)
-  "Return the controller spec file name for the controller named
-CONTROLLER."
-  (or (car (rails-core:rspec-controller-files controller))
-      (rails-core:file (format "spec/controllers/%s_controller_spec.rb" (rails-core:file-by-class controller t)))))
-
 (defun rails-core:lib-file (lib-name)
   "Return the model file from the lib name."
   (when lib-name
     (concat "lib/" (rails-core:file-by-class lib-name))))
 
-(defun rails-core:rspec-lib-file (lib)
-  "Return the lib spec file name for the lib named LIB."
-  (when lib
-    (format "spec/lib/%s_spec.rb" (rails-core:file-by-class lib t))))
-
-(defun rails-core:rspec-model-file (model)
-  "Return the model spec file name for the model named MODEL."
-  (when model
-    (format "spec/models/%s_spec.rb" (rails-core:file-by-class model t))))
-
-(defun rails-core:rspec-fixture-file (model)
-  "Return the rspec fixtures file name for the model named MODEL."
-  (when model
-    (format "spec/fixtures/%s.yml" (pluralize-string (rails-core:file-by-class model t)))))
-
-(defun rails-core:rspec-lib-exist-p (lib)
-  "Return the lib spec file name for the model named MODEL."
-  (let ((spec (rails-core:rspec-lib-file lib)))
-    (when spec
-      (file-exists-p (rails-core:file spec)))))
-
-(defun rails-core:rspec-model-exist-p (model)
-  "Return the model spec file name for the model named MODEL."
-  (let ((spec (rails-core:rspec-model-file model)))
-    (when spec
-      (file-exists-p (rails-core:file spec)))))
-
-(defun rails-core:rspec-fixture-exist-p (model)
-  (when model
-    (file-exists-p
-     (rails-core:file (rails-core:rspec-fixture-file model)))))
 
 ;;;;;;;;;; Functions that return collection of Rails objects  ;;;;;;;;;;
 (defun rails-core:observer-p (name)
@@ -665,30 +611,8 @@ If the action is nil, return all views for the controller."
   "Return the parent classes of controllers."
   (rails-core:extract-ancestors (rails-core:controllers)))
 
-(defun rails-core:rspec-controllers ()
-  "Return a list of Rails controller specs."
-  (mapcar
-   #'(lambda(it)
-       (remove-postfix (rails-core:class-by-file it)
-                       "Spec"))
-   (directory-files-recursive (rails-core:file "spec/controllers/") nil "\\.rb$")))
 
-(defun rails-core:rspec-models ()
-  "Return a list of Rails model specs."
-  (mapcar
-   #'(lambda(it)
-       (remove-postfix (rails-core:class-by-file it)
-                       "Spec"))
-   (directory-files-recursive (rails-core:file "spec/models/") nil "\\.rb$")))
-
-(defun rails-core:rspec-fixtures ()
-  "Return a list of Rails RSpec fixtures."
-  (mapcar
-   #'(lambda (l)
-       (replace-regexp-in-string "\\.[^.]+$" "" l))
-   (directory-files-recursive (rails-core:file "spec/fixtures/") nil "\\.yml$")))
-
-;;;;;;;;;; Getting Controllers/Model/Action from current buffer ;;;;;;;;;;
+;;;;;;;;;; Getting Controllers/Decorators/Model/Action from current buffer ;;;;;;;;;;
 
 (defun rails-core:current-controller ()
   "Return the current Rails controller."
@@ -699,8 +623,7 @@ If the action is nil, return all views for the controller."
         (:view (rails-core:class-by-file
                 (directory-file-name (directory-of-file (buffer-file-name)))))
         (:helper (remove-postfix file-class "Helper"))
-        (:controllers-test (remove-postfix file-class "ControllerTest"))
-        (:rspec-controller (remove-postfix file-class "Spec"))))))
+        (:controllers-test (remove-postfix file-class "ControllerTest"))))))
 
 (defun rails-core:current-model ()
   "Return the current Rails model."
@@ -710,9 +633,7 @@ If the action is nil, return all views for the controller."
         (:migration (rails-core:model-by-migration-filename (buffer-name)))
         (:model file-class)
         (:models-test (remove-postfix file-class "Test"))
-        (:fixture (singularize-string file-class))
-        (:rspec-fixture (singularize-string file-class))
-        (:rspec-model (remove-postfix file-class "Spec"))))))
+        (:fixture (singularize-string file-class))))))
 
 (defun rails-core:current-decorator ()
   "Return the current Rails decorator."
@@ -727,8 +648,7 @@ If the action is nil, return all views for the controller."
   (let* ((file-class (rails-core:class-by-file (buffer-file-name))))
     (unless (rails-core:mailer-p file-class)
       (case (rails-core:buffer-type)
-        (:lib file-class)
-        (:rspec-lib (remove-postfix file-class "Spec"))))))
+        (:lib file-class)))))
 
 (defun rails-core:current-mailer ()
   "Return the current Rails Mailer, else return nil."
@@ -982,10 +902,6 @@ the Rails minor mode log."
 (defun rails-core:rhtml-buffer-p ()
   "Return non nil if the current buffer is rhtml file."
   (string-match "\\.rhtml\\|\\.html\\.erb$" (buffer-file-name)))
-
-(defun rails-core:spec-exist-p ()
-  "Return non nil if spec directory is exist."
-  (file-exists-p (rails-core:file "spec")))
 
 (defun rails-core:prepare-command (command)
   (if (and rails-rake-use-bundler-when-possible (file-exists-p (rails-core:file "Gemfile")))

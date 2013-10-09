@@ -30,8 +30,7 @@
   "Minor mode for RubyOnRails models."
   :lighter " Model"
   :keymap (rails-model-layout:keymap :model)
-  (if (rails-core:spec-exist-p) (setq rails-primary-switch-func 'rails-model-layout:switch-to-rspec-model)
-      (setq rails-primary-switch-func 'rails-model-layout:switch-to-models-test))
+  (setq rails-primary-switch-func 'rails-model-layout:switch-to-models-test)
   (setq rails-secondary-switch-func 'rails-model-layout:menu))
 
 (provide 'rails-model-minor-mode)

@@ -7,11 +7,7 @@
         ([goto-lib]      '(menu-item "Go to Lib"
                                      rails-lib-layout:switch-to-lib
                                      :enable (and (not (eq (rails-core:buffer-type) :lib))
-                                                  (rails-core:lib-exist-p (rails-core:current-lib)))))
-        ([goto-rspec]    '(menu-item "Go to RSpec"
-                                     rails-lib-layout:switch-to-rspec-lib
-                                     :enable (and (not (eq (rails-core:buffer-type) :rspec-lib))
-                                                  (rails-core:rspec-lib-exist-p (rails-core:current-lib))))))
+                                                  (rails-core:lib-exist-p (rails-core:current-lib))))))
       (define-keys map
         ((rails-key "l")         'rails-lib-layout:switch-to-lib)
         ((rails-key "r")         'rails-lib-layout:switch-to-models-test)
@@ -23,7 +19,6 @@
          (lib (rails-core:current-lib))
          (item (if lib lib))
          (item (case type
-                 (:rspec-lib (rails-core:rspec-lib-file item))
                  (:lib (rails-core:lib-file lib)))))
     (if item
         (let ((file (rails-core:file item)))
@@ -34,7 +29,6 @@
             (message "File %s not exists" file)))
       (message "%s not found" name))))
 
-(defun rails-lib-layout:switch-to-rspec-lib () (interactive) (rails-lib-layout:switch-to :rspec-lib))
 (defun rails-lib-layout:switch-to-lib () (interactive) (rails-lib-layout:switch-to :lib))
 
 (defun rails-lib-layout:menu ()
@@ -44,8 +38,6 @@
          (title (capitalize (substring (symbol-name type) 1)))
          (lib (rails-core:current-lib)))
     (when lib
-      (unless (eq type :rspec-lib)
-        (add-to-list 'item (cons "RSpec" :rspec-lib)))
       (unless (eq type :lib)
         (add-to-list 'item (cons "Lib" :lib))))
     (when item

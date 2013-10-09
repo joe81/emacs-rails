@@ -76,7 +76,6 @@
 (require 'rails-controller-layout)
 (require 'rails-features)
 (require 'rails-lib-layout)
-(require 'rails-spec)
 (require 'rails-shoulda)
 (require 'rails-refactoring)
 
@@ -185,11 +184,6 @@ Emacs w3m browser."
     (:integration-test "test/integration/")
     (:fixture          "test/fixtures/")
     (:lib              "lib")
-    (:rspec-controller "spec/controllers")
-    (:rspec-controller "spec/requests")
-    (:rspec-fixture    "spec/fixtures")
-    (:rspec-lib        "spec/lib")
-    (:rspec-model      "spec/models")
     (:migration        "db/migrate"))
   "Rails file types -- rails directories map")
 

@@ -10,11 +10,6 @@
     ("Controllers Tests" rails-core:controllers-tests   rails-core:controllers-test-file)
     ("Models Tests"      rails-core:models-tests        rails-core:models-test-file)
     ("Fixtures"          rails-core:fixtures            rails-core:fixture-file)
-    ("RSpec Controllers" rails-core:rspec-controllers   rails-core:rspec-controller-file)
-    ("RSpec Fixtures"    rails-core:rspec-fixtures      rails-core:rspec-fixture-file)
-    ("RSpec Lib"         rails-core:rspec-lib           rails-core:rspec-lib-file)
-    ("RSpec Models"      rails-core:rspec-models        rails-core:rspec-model-file)
-    ("RSpec Views"       rails-core:rspec-views         rails-core:rspec-view-file)
     ("Fixtures"          rails-core:fixtures            rails-core:fixture-file)
     ("Configuration"     rails-core:configuration-files rails-core:configuration-file)))
 

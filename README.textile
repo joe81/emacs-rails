@@ -3,10 +3,14 @@ It is minor mode for editing "Ruby On Rails":http://rubyonrails.org/ code with "
 
 h2. Features
 
+* Rails 4 ready
+  Implements new rails 4 directory structure: app/models, test/models etc.
+* Decorators
+  Include in Navigation and Running Tests
 * Navigation
-  Go from unit test to model to controller to functional test to view to spec etc.
-* Running tests and specs
-  Run test or spec for the current model, controller, lib etc.
+  Go from unit test to model to controller to functional test to view etc.
+* Running tests
+  Run test for the current model, controller, lib, decorator etc.
 * Console and webserver
   Run this console and webserver in a buffer.
 * Snippets
@@ -32,7 +36,7 @@ h3. Rails-minor-mode
 
 Pull the latest version from github:
 
-<pre><code>  git clone git://github.com/remvee/emacs-rails.git ~/.emacs.d/rails-minor-mode
+<pre><code>  git clone git://github.com/joe81/emacs-rails.git ~/.emacs.d/rails-minor-mode
 </code></pre>
 
 Hook it up in your @.emacs@ or @.emacs.d/init.el@ with something like:
@@ -43,6 +47,8 @@ Hook it up in your @.emacs@ or @.emacs.d/init.el@ with something like:
 
 You're ready to go.
 
+NOTICE: if you want to use this minor-mode for Rails 3.x projects, checkout
+the rails-3.x branch or use the original repo from remvee/emacs-rails.git
 
 h3. Extra's
 

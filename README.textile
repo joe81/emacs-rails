@@ -32,16 +32,12 @@ h3. Rails-minor-mode
 
 Pull the latest version from github:
 
-<pre><code>
-  git clone git://github.com/joe81/emacs-rails.git ~/.emacs.d/emacs-rails
-</code></pre>
+<pre><code>  git clone git://github.com/joe81/emacs-rails.git ~/.emacs.d/emacs-rails</code></pre>
 
 Hook it up in your @.emacs@ or @.emacs.d/init.el@ with something like:
 
-<pre><code>
-  (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-rails"))
-  (require 'rails)
-</code></pre>
+<pre><code>   (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-rails"))
+   (require 'rails)</code></pre>
 
 You're ready to go.
 
@@ -125,44 +121,44 @@ h4. Find files
 
 h3. Useful functions
 
+h4. Tests
+
+* @C-c C-c y a@ Start all tests
+* @C-c C-c y u@ Start all model tests
+* @C-c C-c y f@ Start all controller tests
+* @C-c C-c y d@ Start all decorator tests
+* @C-c C-c y i@ Start all integration tests
+* @C-c C-c .@ Start all tests of current buffer
+* @C-c C-c ,@ Start current test of cursor postition
+* @C-c /@ Toggle output window
+
 h4. Scripts and SQL
 
-* Kill script @C-c C-c k@
-* Rails generate @C-c C-c e@
-* Rails destroy @C-c C-c x@
-* Start Rails console @C-c C-c s c@
-* Start/Stop Webserver @C-c C-c w s@
-* Print Webserver status @C-c C-c w i@
-* Auto open Browser @C-c C-c w i@
-* Start SQL-Buffer @C-c C-c s s@
-* Start terminal console @C-c M-Z@
-* Generate and update TAGS file @C-c C-c C-t@
-* Start rake tasks @C-c C-c r@
+* @C-c C-c k@ Kill script
+* @C-c C-c e@ Rails generate
+* @C-c C-c x@ Rails destroy
+* @C-c C-c s c@ Start Rails console
+* @C-c C-c w s@ Start/Stop Webserver
+* @C-c C-c w i@ Print Webserver status
+* @C-c C-c w i@ Auto open Browser
+* @C-c C-c s s@ Start SQL-Buffer
+* @C-c M-Z@ Start terminal console
+* @C-c C-c C-t@ Generate and update TAGS file
+* @C-c C-c r@ Start rake tasks
 
 h4. Database
 
-* Run migrations @C-c C-c d m@
-* Migrate to version @C-c C-c d v@
-* Migrate to previous version @C-c C-c d v@
-* Migrate version up @C-c C-c d u@
-* Migrate version down @C-c C-c d d@
-
-h4. Tests
-
-* Start all tests @C-c C-c y a@
-* Start all model tests @C-c C-c y u@
-* Start all controller tests @C-c C-c y f@
-* Start all decorator tests @C-c C-c y d@
-* Start all integration tests @C-c C-c y i@
-* Start all tests of current buffer @C-c C-c .@
-* Start current test of cursor postition @C-c C-c ,@
-* Toggle output window @C-c /@
+* @C-c C-c d m@ Run migrations
+* @C-c C-c d v@ Migrate to version
+* @C-c C-c d v@ Migrate to previous version
+* @C-c C-c d u@ Migrate version up
+* @C-c C-c d d@ Migrate version down
 
 h4. Misc
 
-* Create partial from selection @C-c p@
-* Create helper from block  @C-c b@
-* Search in project @C-c s@
+* @C-c p@ Create partial from selection
+* @C-c b@ Create helper from block
+* @C-c s@ Search in project
 
 h2. Credits
 

@@ -1,7 +1,4 @@
-It is minor mode for editing "Ruby On Rails":http://rubyonrails.org/
-code with "Emacs":http://www.gnu.org/software/emacs/.  This repo is a
-fork of "remvee emacs-rails":https://github.com/remvee/emacs-rails and
-adds the missing Rails 4 structure.
+It is minor mode for editing "Ruby On Rails":http://rubyonrails.org/ code with "Emacs":http://www.gnu.org/software/emacs/. This repo is a fork of "remvee emacs-rails":https://github.com/remvee/emacs-rails and adds the missing Rails 4 structure.
 
 h2. Features
 
@@ -20,14 +17,11 @@ h2. Features
 * Generations
   Run rails generate scripts like rails generate model ...
 
-Try @C-h b@ to find out what key bindings are available and see @M-x
-customize-group <RET> rails@ for all the knobs and switches.
+Try @C-h b@ to find out what key bindings are available and see @M-x customize-group <RET> rails@ for all the knobs and switches.
 
 h2. Installation
 
-All below listed packages (expect this minor-mode) can be installed
-via "MELPA":http://melpa.milkbox.net, "ELPA":http://tromey.com or
-"MARMELADE":http://marmalade-repo.org.
+All below listed packages (expect this minor-mode) can be installed via "MELPA":http://melpa.milkbox.net, "ELPA":http://tromey.com or "MARMELADE":http://marmalade-repo.org.
 
 h3. Dependencies
 
@@ -65,9 +59,7 @@ h3. Helpful packages
 
 h2. Choose Rails version
 
-As default this mode can be used for Rails 4 projects. If you want to
-use it for Rails 3 projects, checkout the rails-3.x branch or use the
-original repo from remvee/emacs-rails.git
+As default this mode can be used for Rails 4 projects. If you want to use it for Rails 3 projects, checkout the rails-3.x branch or use the original repo from remvee/emacs-rails.git
 
 h2. Usage
 
@@ -75,112 +67,103 @@ h3. Navigation
 
 h4. Switching
 
-* `C-c C-c g m` goto models
-* `C-c C-c g c` goto controllers
-* `C-c C-c g d` goto decorators
-* `C-c C-c g d` goto libs
-* `C-c C-c g h` goto helpers
-* `C-c C-c g g` goto migrations
-* `C-c C-c g j` goto javascripts
-* `C-c C-c g s` goto stylesheets
-* `C-c C-c g l` goto layouts
-* `C-c C-c g p` goto plugins
-* `C-c C-c g u` goto model tests
-* `C-c C-c g f` goto controller tests
-* `C-c C-c g i` goto integration tests
-* `C-c C-c g d` goto decorator tests
-* `C-c C-c g x` goto fixtures
-* `C-return` goto file on current line
+* @C-c C-c g m@ goto models
+* @C-c C-c g c@ goto controllers
+* @C-c C-c g d@ goto decorators
+* @C-c C-c g d@ goto libs
+* @C-c C-c g h@ goto helpers
+* @C-c C-c g g@ goto migrations
+* @C-c C-c g j@ goto javascripts
+* @C-c C-c g s@ goto stylesheets
+* @C-c C-c g l@ goto layouts
+* @C-c C-c g p@ goto plugins
+* @C-c C-c g u@ goto model tests
+* @C-c C-c g f@ goto controller tests
+* @C-c C-c g i@ goto integration tests
+* @C-c C-c g d@ goto decorator tests
+* @C-c C-c g x@ goto fixtures
+* @C-return@ goto file on current line
 
 h4. Quick Switching
 
 Quick switch from Model to:
 
-* `C-c c` Controller
-* `C-c d` Decorator
-* `C-c u` ModelTest
-* `C-c x` Fixture
+* @C-c c@ Controller
+* @C-c d@ Decorator
+* @C-c u@ ModelTest
+* @C-c x@ Fixture
 
 Quick switch from Controller to:
 
-* `C-c m` Model
-* `C-c h` Helper
-* `C-c d` Decorator
-* `C-c f` ControllerTest
-* `C-up` View of method
-* `C-down` Select specific view
+* @C-c m@ Model
+* @C-c h@ Helper
+* @C-c d@ Decorator
+* @C-c f@ ControllerTest
+* @C-up@ View of method
+* @C-down@ Select specific view
 
 See context sensitive menus for other quick switchs.
 
 h4. Find files
 
-* `C-c f m` find models
-* `C-c f c` find controller
-* `C-c f h` find helpers
-* `C-c f l` find layout
-* `C-c f s` find stylesheets
-* `C-c f j` find javascripts
-* `C-c f g` find migrate
-* `C-c f b` find lib
-* `C-c f t` find tasks
-* `C-c f v` find view
-* `C-c f d` find db
-* `C-c f p` find public
-* `C-c f f` find fixtures
-* `C-c f o` find config
-* `C-c f a` find assets
+* @C-c f m@ find models
+* @C-c f c@ find controller
+* @C-c f h@ find helpers
+* @C-c f l@ find layout
+* @C-c f s@ find stylesheets
+* @C-c f j@ find javascripts
+* @C-c f g@ find migrate
+* @C-c f b@ find lib
+* @C-c f t@ find tasks
+* @C-c f v@ find view
+* @C-c f d@ find db
+* @C-c f p@ find public
+* @C-c f f@ find fixtures
+* @C-c f o@ find config
+* @C-c f a@ find assets
 
 
 h3. Useful functions
 
 h4. Scripts and SQL
 
-* Kill script `C-c C-c k`
-* Rails generate `C-c C-c e`
-* Rails destroy `C-c C-c x`
-* Start Rails console `C-c C-c s c`
-* Start/Stop Webserver `C-c C-c w s`
-* Print Webserver status `C-c C-c w i`
-* Auto open Browser `C-c C-c w i`
-* Start SQL-Buffer `C-c C-c s s`
-* Start terminal console `C-c M-Z`
-* Generate and update TAGS file `C-c C-c C-t`
-* Start rake tasks `C-c C-c r`
+* Kill script @C-c C-c k@
+* Rails generate @C-c C-c e@
+* Rails destroy @C-c C-c x@
+* Start Rails console @C-c C-c s c@
+* Start/Stop Webserver @C-c C-c w s@
+* Print Webserver status @C-c C-c w i@
+* Auto open Browser @C-c C-c w i@
+* Start SQL-Buffer @C-c C-c s s@
+* Start terminal console @C-c M-Z@
+* Generate and update TAGS file @C-c C-c C-t@
+* Start rake tasks @C-c C-c r@
 
 h4. Database
 
-* Run migrations `C-c C-c d m`
-* Migrate to version `C-c C-c d v`
-* Migrate to previous version `C-c C-c d v`
-* Migrate version up `C-c C-c d u`
-* Migrate version down `C-c C-c d d`
+* Run migrations @C-c C-c d m@
+* Migrate to version @C-c C-c d v@
+* Migrate to previous version @C-c C-c d v@
+* Migrate version up @C-c C-c d u@
+* Migrate version down @C-c C-c d d@
 
 h4. Tests
 
-* Start all tests `C-c C-c y a`
-* Start all model tests `C-c C-c y u`
-* Start all controller tests `C-c C-c y f`
-* Start all decorator tests `C-c C-c y d`
-* Start all integration tests `C-c C-c y i`
-* Start all tests of current buffer `C-c C-c .`
-* Start current test of cursor postition `C-c C-c ,`
-* Toggle output window `C-c /`
+* Start all tests @C-c C-c y a@
+* Start all model tests @C-c C-c y u@
+* Start all controller tests @C-c C-c y f@
+* Start all decorator tests @C-c C-c y d@
+* Start all integration tests @C-c C-c y i@
+* Start all tests of current buffer @C-c C-c .@
+* Start current test of cursor postition @C-c C-c ,@
+* Toggle output window @C-c /@
 
 h4. Misc
 
-* Create partial from selection `C-c p`
-* Create helper from block  `C-c b`
-* Search in project `C-c s`
-
-h2. Bugs
-
-Yes!  Plenty!  And most of them known, ignored and yearning for your
-attention!  Please fork this repository and fix the stuff that bothers
-you.
-
+* Create partial from selection @C-c p@
+* Create helper from block  @C-c b@
+* Search in project @C-c s@
 
 h2. Credits
 
-A big thanks to Dmitry Galinsky for starting this project and Remco
-van 't Veer and the other contributors who helped to push/enhance this
-project.
+A big thanks to Dmitry Galinsky for starting this project and Remco van 't Veer and the other contributors who helped to push/enhance this project.

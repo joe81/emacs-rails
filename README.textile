@@ -1,5 +1,4 @@
-It is minor mode for editing "Ruby On Rails":http://rubyonrails.org/ code with "Emacs":http://www.gnu.org/software/emacs/.
-
+It is minor mode for editing "Ruby On Rails":http://rubyonrails.org/ code with "Emacs":http://www.gnu.org/software/emacs/. This repo is a fork of "remvee emacs-rails":https://github.com/remvee/emacs-rails and adds the missing Rails 4 structure.
 
 h2. Features
 
@@ -13,81 +12,149 @@ h2. Features
   Run test for the current model, controller, lib, decorator etc.
 * Console and webserver
   Run this console and webserver in a buffer.
-* Snippets
-  Use snippets to speedup code writing and editing.
+* Rake tasks
+  Run rake tasks like rake db:migrate
+* Generations
+  Run rails generate scripts like rails generate model ...
 
 Try @C-h b@ to find out what key bindings are available and see @M-x customize-group <RET> rails@ for all the knobs and switches.
 
-
 h2. Installation
 
+All below listed packages (except this minor-mode) can be installed via "MELPA":http://melpa.milkbox.net, "ELPA":http://tromey.com or "MARMELADE":http://marmalade-repo.org.
 
 h3. Dependencies
 
-Before you install this package make sure the following dependencies met:
-
 * Ruby Mode
 * Inferior Ruby Mode
-
-These are installable via the "ELPA":http://tromey.com/elpa/ or using @apt-get install ruby-elisp@.  Some Emacs distributions include them by default.
-
 
 h3. Rails-minor-mode
 
 Pull the latest version from github:
 
-<pre><code>  git clone git://github.com/joe81/emacs-rails.git ~/.emacs.d/rails-minor-mode
-</code></pre>
+<pre><code>  git clone git://github.com/joe81/emacs-rails.git ~/.emacs.d/emacs-rails</code></pre>
 
 Hook it up in your @.emacs@ or @.emacs.d/init.el@ with something like:
 
-<pre><code>  (add-to-list 'load-path (expand-file-name "~/.emacs.d/rails-minor-mode"))
-  (require 'rails)
-</code></pre>
+<pre><code>  (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-rails"))
+  (require 'rails)</code></pre>
 
 You're ready to go.
 
-NOTICE: if you want to use this minor-mode for Rails 3.x projects, checkout
-the rails-3.x branch or use the original repo from remvee/emacs-rails.git
+h3. Helpful packages
 
-h3. Extra's
+* rhtml-mode
+* yaml-mode
+* ruby-electric
+* company-mode or auto-complete
+* robe
+* flymake-ruby, flymake-coffee, flymake-json, flymake-yaml
+* autopair-mode
+* yasnippet-mode
+* coffee-mode
 
-You can find HAML and SASS support via ELPA.
+h2. Choose Rails version
 
+As default this mode can be used for Rails 4 projects. If you want to use it for Rails 3 projects, checkout the rails-3.x branch or use the original repo from remvee/emacs-rails.git
 
-h4. RHTML-mode
+h2. Usage
 
-The latest from github:
+h3. Switching
 
-<pre><code>  git clone git://github.com/eschulte/rhtml.git ~/.emacs.d/rhtml-minor-mode
-</code></pre>
+* @C-c C-c g m@ goto models
+* @C-c C-c g c@ goto controllers
+* @C-c C-c g d@ goto decorators
+* @C-c C-c g d@ goto libs
+* @C-c C-c g h@ goto helpers
+* @C-c C-c g g@ goto migrations
+* @C-c C-c g j@ goto javascripts
+* @C-c C-c g s@ goto stylesheets
+* @C-c C-c g l@ goto layouts
+* @C-c C-c g p@ goto plugins
+* @C-c C-c g u@ goto model tests
+* @C-c C-c g f@ goto controller tests
+* @C-c C-c g i@ goto integration tests
+* @C-c C-c g d@ goto decorator tests
+* @C-c C-c g x@ goto fixtures
+* @C-return@ goto file on current line
 
-Hook it up:
+h3. Quick Switching
 
-<pre><code>  (add-to-list 'load-path (expand-file-name "~/.emacs.d/rhtml-minor-mode"))
-  (require 'rhtml-mode)
-</code></pre>
+Quick switch from Model to:
 
+* @C-c c@ Controller
+* @C-c d@ Decorator
+* @C-c u@ ModelTest
+* @C-c x@ Fixture
 
-h4. YAML-mode
+Quick switch from Controller to:
 
-Latest from subversion repo:
+* @C-c m@ Model
+* @C-c h@ Helper
+* @C-c d@ Decorator
+* @C-c f@ ControllerTest
+* @C-up@ View of method
+* @C-down@ Select specific view
 
-<pre><code>  svn co http://svn.clouder.jp/repos/public/yaml-mode/trunk/ ~/.emacs.d/yaml-mode
-</code></pre>
+See context sensitive menus for other quick switchs.
 
-Hook it up:
+h3. Find files
 
-<pre><code>  (add-to-list 'load-path (expand-file-name "~/.emacs.d/yaml-mode"))
-  (require 'yaml-mode)
-</code></pre>
+* @C-c f m@ find models
+* @C-c f c@ find controller
+* @C-c f h@ find helpers
+* @C-c f l@ find layout
+* @C-c f s@ find stylesheets
+* @C-c f j@ find javascripts
+* @C-c f g@ find migrate
+* @C-c f b@ find lib
+* @C-c f t@ find tasks
+* @C-c f v@ find view
+* @C-c f d@ find db
+* @C-c f p@ find public
+* @C-c f f@ find fixtures
+* @C-c f o@ find config
+* @C-c f a@ find assets
 
+h3. Tests
 
-h2. Bugs
+* @C-c C-c y a@ Start all tests
+* @C-c C-c y u@ Start all model tests
+* @C-c C-c y f@ Start all controller tests
+* @C-c C-c y d@ Start all decorator tests
+* @C-c C-c y i@ Start all integration tests
+* @C-c C-c .@ Start all tests of current buffer
+* @C-c C-c ,@ Start current test of cursor postition
+* @C-c /@ Toggle output window
 
-Yes!  Plenty!  And most of them known, ignored and yearning for your attention!  Please fork this repository and fix the stuff that bothers you.
+h3. Scripts and SQL
 
+* @C-c C-c k@ Kill script
+* @C-c C-c e@ Rails generate
+* @C-c C-c x@ Rails destroy
+* @C-c C-c s c@ Start Rails console
+* @C-c C-c w s@ Start/Stop Webserver
+* @C-c C-c w i@ Print Webserver status
+* @C-c C-c w i@ Auto open Browser
+* @C-c C-c s s@ Start SQL-Buffer
+* @C-c M-Z@ Start terminal console
+* @C-c C-c C-t@ Generate and update TAGS file
+* @C-c C-c r@ Start rake tasks
+
+h3. Database
+
+* @C-c C-c d m@ Run migrations
+* @C-c C-c d v@ Migrate to version
+* @C-c C-c d v@ Migrate to previous version
+* @C-c C-c d u@ Migrate version up
+* @C-c C-c d d@ Migrate version down
+
+h3. Misc
+
+* @C-c p@ Create partial from selection
+* @C-c b@ Create helper from block
+* @C-c s@ Search in project
 
 h2. Credits
 
-A big thanks to Dmitry Galinsky for starting this project.  Since then a lot of people touched it too, checkout the commit logs.
+A big thanks to Dmitry Galinsky for starting this project and Remco van 't Veer and the other contributors who helped to push/enhance this project.

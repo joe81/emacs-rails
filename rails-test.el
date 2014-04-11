@@ -218,7 +218,7 @@ Used when it's determined that the output buffer needs to be shown."
 	(test-name file))
     (if (string-match "\\([^/\\\\.]+\\)_test\.rb$" test-name)
 	(setq test-name (concat "test " (match-string-no-properties 1 test-name))))
-    (rails-script:run rails-ruby-command (append (list "-Itest") param) 'rails-test:compilation-mode test-name)
+    (rails-script:run rake-command (append (list "test") param) 'rails-test:compilation-mode test-name)
     (setq rails-test:previous-run-single-param param)))
 
 (defun rails-test:rerun-single ()
@@ -269,13 +269,13 @@ Used when it's determined that the output buffer needs to be shown."
         (description (or (rails-shoulda:current-test) (rails-test:active-support-test-case-current-test))))
     (cond (description
            (rails-test:run-single-file file
-                                       (format "--name=/%s/"
+                                       (format "/%s/"
                                                (replace-regexp-in-string "^\\.\\|\\.$" ""
                                                                          (replace-regexp-in-string "[^a-z0-9,-]+" "."
                                                                                                    description)))))
           (method
            (rails-test:run-single-file file
-                                       (format "--name=%s" method))))))
+                                       (format "%s" method))))))
 
 ;; These functions were originally defined anonymously in ui. They are defined here so keys
 ;; can be added to them dryly

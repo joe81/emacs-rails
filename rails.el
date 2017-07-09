@@ -129,6 +129,11 @@ Emacs w3m browser."
   :group 'rails
   :type 'string)
 
+(defcustom rails-test-command "bin/rails"
+  "Commad that run the test (Rails 4 bin/rake or Rails 5 bin/rails )"
+  :group 'rails
+  :type 'string)
+
 (defcustom rake-command "bin/rake"
   "Rake ..."
   :group 'rails
@@ -183,6 +188,7 @@ Emacs w3m browser."
     (:model            "vendor/plugins/.*/lib/") ; needs to appear before more-general :plugin
     (:plugin           "vendor/plugins/")
     (:models-test      "test/models/")
+    (:operations-test  "test/concepts/")
     (:controllers-test "test/controllers/")
     (:decorators-test  "test/decorators/")
     (:integration-test "test/integration/")
@@ -213,13 +219,13 @@ Emacs w3m browser."
   :group 'rails
   :type '(repeat string))
 
-(defcustom rails-grep-extensions '("builder" "erb" "haml" "liquid" "mab" "rake" "rb" "rhtml" "rjs" "rxml" "yml" "feature" "js" "html" "rtex" "prawn" "coffee" "less" "scss" "rabl" "json_builder" "jbuilder" "slim")
+(defcustom rails-grep-extensions '("builder" "erb" "haml" "liquid" "mab" "rake" "rb" "rjs" "rxml" "yml" "feature" "js" "html" "rtex" "prawn" "coffee" "less" "scss" "rabl" "json_builder" "jbuilder" "slim")
   "List of file extensions which grep searches."
   :group 'rails
   :type '(repeat string))
 
 (defcustom rails-templates-list
-  '("html.erb" "erb" "js.rjs" "rjs" "xml.builder" "builder" "rhtml" "rxml" "html.haml" "haml" "html.liquid" "liquid" "html.mad" "mab" "pdf.rtex" "rtex" "pdf.prawn" "prawn" "rabl" "json_builder" "json.jbuilder" "html.slim" "slim")
+  '("html.erb" "erb" "js.rjs" "rjs" "xml.builder" "builder" "rxml" "html.haml" "haml" "html.liquid" "liquid" "html.mad" "mab" "pdf.rtex" "rtex" "pdf.prawn" "prawn" "rabl" "json_builder" "json.jbuilder" "html.slim" "slim")
   "List of view templates.  This first template is the default template."
   :group 'rails
   :type '(repeat string))
@@ -538,8 +544,8 @@ necessary."
                                 ("\\.prawn$"   . ruby-mode)
                                 ("\\.scss$"    . css-mode)
                                 ("\\.rabl$"    . ruby-mode)
-                                ("\\.rhtml$"   . rhtml-mode)
-                                ("\\.erb$"     . rhtml-mode)))
+                                ("\\.rhtml$"   . web-mode)
+                                ("\\.erb$"     . web-mode)))
 
 (dolist (pair rails-auto-mode-alist)
   (add-to-list 'auto-mode-alist pair)

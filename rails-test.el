@@ -213,12 +213,12 @@ Used when it's determined that the output buffer needs to be shown."
     "Refuse to run ruby without an argument: it would never return")
   (rails-ui:reset-error-count)
   (let ((param (if param
-                   (list file param)
+                   (list (concat file ":" param))
                  (list file)))
 	(test-name file))
     (if (string-match "\\([^/\\\\.]+\\)_test\.rb$" test-name)
 	(setq test-name (concat "test " (match-string-no-properties 1 test-name))))
-    (rails-script:run rake-command (append (list "test") param) 'rails-test:compilation-mode test-name)
+    (rails-script:run rails-test-command (append (list "test") param) 'rails-test:compilation-mode test-name)
     (setq rails-test:previous-run-single-param param)))
 
 (defun rails-test:rerun-single ()
@@ -229,15 +229,17 @@ Used when it's determined that the output buffer needs to be shown."
     (message "No previous single file test recorded.")))
 
 (defun rails-test:run-current ()
-  "Run a test for the current controller/model/mailer/decorator."
+  "Run a test for the current controller/model/mailer/decorator/operation."
   (interactive)
   (let* ((model (rails-core:current-model))
          (controller (rails-core:current-controller))
          (mailer (rails-core:current-mailer))
          (decorator (rails-core:current-decorator))
+         (operation (rails-core:current-operation))
          (controllers-test (rails-core:controllers-test-file controller))
          (models-test (rails-core:models-test-file model))
          (mailer-test (rails-core:models-test-file mailer))
+         (operations-test (rails-core:operations-test-file operation))
          (decorators-test (rails-core:decorators-test-file decorator)))
     (rails-test:run-single-file
      (cond
@@ -250,6 +252,8 @@ Used when it's determined that the output buffer needs to be shown."
       ((and mailer mailer-test) mailer-test)
       ;; decorator
       ((and decorator decorators-test) decorators-test)
+      ;; operation
+      ((and operation operations-test) operations-test)
       ;; otherwise...
       (t (if (string-match "test.*\\.rb" (buffer-file-name))
              (buffer-file-name)
@@ -261,6 +265,21 @@ Used when it's determined that the output buffer needs to be shown."
     (and (search-backward-regexp "^[ \t]+test[ \t]+\\([\'\"]\\)\\(.*?\\)\\1[ \t]+do" nil t)
          (match-string-no-properties 2))))
 
+;; (defun rails-test:run-current-method ()
+;;   "Run a test for the current method."
+;;   (interactive)
+;;   (let ((file (substring (buffer-file-name) (length (rails-project:root))))
+;;         (method (rails-core:current-method-name))
+;;         (description (or (rails-shoulda:current-test) (rails-test:active-support-test-case-current-test))))
+;;     (cond (description
+;;            (rails-test:run-single-file file
+;;                                        (format "/%s/"
+;;                                                (replace-regexp-in-string "^\\.\\|\\.$" ""
+;;                                                                          (replace-regexp-in-string "[^a-z0-9,-]+" "."
+;;                                                                                                    description)))))
+;;           (method
+;;            (rails-test:run-single-file file
+;;                                        (format "%s" method))))))
 (defun rails-test:run-current-method ()
   "Run a test for the current method."
   (interactive)
@@ -268,14 +287,8 @@ Used when it's determined that the output buffer needs to be shown."
         (method (rails-core:current-method-name))
         (description (or (rails-shoulda:current-test) (rails-test:active-support-test-case-current-test))))
     (cond (description
-           (rails-test:run-single-file file
-                                       (format "/%s/"
-                                               (replace-regexp-in-string "^\\.\\|\\.$" ""
-                                                                         (replace-regexp-in-string "[^a-z0-9,-]+" "."
-                                                                                                   description)))))
-          (method
-           (rails-test:run-single-file file
-                                       (format "%s" method))))))
+           (rails-test:run-single-file file (format "%d" (1+ (count-lines 1 (point))) )))
+          (method (rails-test:run-single-file file (format "" method))))))
 
 ;; These functions were originally defined anonymously in ui. They are defined here so keys
 ;; can be added to them dryly
@@ -291,6 +304,10 @@ Used when it's determined that the output buffer needs to be shown."
   "Run Controllers Tests."
   (interactive)
   (rails-test:run "controllers"))
+(defun rails-test:run-operations ()
+  "Run Operations Tests."
+  (interactive)
+  (rails-test:run "operations"))
 (defun rails-test:run-decorators ()
   "Run Decorators Tests."
   (interactive)

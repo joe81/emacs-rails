@@ -36,12 +36,14 @@
     "app/helpers"
     "app/mailers"
     "app/assets"
+    "app/concepts"
     "test/fixtures"
     "test/controllers"
     "test/mailers"
     "test/integration"
     "test/models"
     "test/decorators"
+    "test/concepts"
     "lib")
   "Directories with Rails classes"
   :group 'rails
@@ -49,7 +51,7 @@
 
 (defun rails-core:class-by-file (filename)
   "Return the class associated with FILENAME.
-   <rails-root>/(app/decorators|app/assets|app/mailers|app/models|app/controllers|app/helpers|test/models|test/decorators|test/controllers|test/mailers|test/integration|lib)/foo/bar_baz
+   <rails-root>/(app/decorators|app/assets|app/mailers|app/models|app/controllers|app/helpers|test/models|test/decorators|test/controllers|test/mailers|test/integration|lib|test/concepts)/foo/bar_baz
                 --> Foo::BarBaz"
   (let* ((case-fold-search nil)
          (path (replace-regexp-in-string
@@ -329,6 +331,19 @@ CONTROLLER."
   (let ((test (rails-core:models-test-file model)))
     (when test
       (file-exists-p (rails-core:file test)))))
+
+
+(defun rails-core:operations-test-file (model)
+  "Return the operations test file name for the model named MODEL."
+  (when model
+    (format "test/concepts/%s_test.rb" (rails-core:file-by-class model t))))
+
+(defun rails-core:operations-test-exist-p (model)
+  "Return the operations test file name for the model named MODEL."
+  (let ((test (rails-core:operations-test-file model)))
+    (when test
+      (file-exists-p (rails-core:file test)))))
+
 
 (defun rails-core:fixture-file (model)
   "Return the fixtures file name for the model named MODEL."
@@ -633,6 +648,15 @@ If the action is nil, return all views for the controller."
         (:migration (rails-core:model-by-migration-filename (buffer-name)))
         (:model file-class)
         (:models-test (remove-postfix file-class "Test"))
+        (:fixture (singularize-string file-class))))))
+
+(defun rails-core:current-operation ()
+  "Return the current Rails operation."
+  (let* ((file-class (rails-core:class-by-file (buffer-file-name))))
+    (unless (rails-core:mailer-p file-class)
+      (case (rails-core:buffer-type)
+        (:operation file-class)
+        (:operations-test (remove-postfix file-class "Test"))
         (:fixture (singularize-string file-class))))))
 
 (defun rails-core:current-decorator ()

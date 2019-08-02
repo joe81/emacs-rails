@@ -138,6 +138,6 @@
   (interactive) (rails-rake:task "db:test:clone"))
 
 (defun rails-rake:rake-command (&optional args)
-  (rails-core:prepare-command (concat "rake " args)))
+  (rails-core:prepare-command (concat "bin/rails " args)))
 
 (provide 'rails-rake)

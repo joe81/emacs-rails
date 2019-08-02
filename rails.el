@@ -189,6 +189,7 @@ Emacs w3m browser."
     (:plugin           "vendor/plugins/")
     (:models-test      "test/models/")
     (:operations-test  "test/concepts/")
+    (:system-test      "test/system/")
     (:controllers-test "test/controllers/")
     (:decorators-test  "test/decorators/")
     (:integration-test "test/integration/")

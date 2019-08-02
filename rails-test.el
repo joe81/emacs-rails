@@ -229,17 +229,19 @@ Used when it's determined that the output buffer needs to be shown."
     (message "No previous single file test recorded.")))
 
 (defun rails-test:run-current ()
-  "Run a test for the current controller/model/mailer/decorator/operation."
+  "Run a test for the current controller/model/mailer/decorator/operation/system."
   (interactive)
   (let* ((model (rails-core:current-model))
          (controller (rails-core:current-controller))
          (mailer (rails-core:current-mailer))
          (decorator (rails-core:current-decorator))
          (operation (rails-core:current-operation))
+         (system (rails-core:current-system))
          (controllers-test (rails-core:controllers-test-file controller))
          (models-test (rails-core:models-test-file model))
          (mailer-test (rails-core:models-test-file mailer))
          (operations-test (rails-core:operations-test-file operation))
+         (system-test (rails-core:system-test-file system))
          (decorators-test (rails-core:decorators-test-file decorator)))
     (rails-test:run-single-file
      (cond
@@ -254,6 +256,8 @@ Used when it's determined that the output buffer needs to be shown."
       ((and decorator decorators-test) decorators-test)
       ;; operation
       ((and operation operations-test) operations-test)
+      ;; system
+      ((and system system-test) system-test)
       ;; otherwise...
       (t (if (string-match "test.*\\.rb" (buffer-file-name))
              (buffer-file-name)
@@ -308,6 +312,10 @@ Used when it's determined that the output buffer needs to be shown."
   "Run Operations Tests."
   (interactive)
   (rails-test:run "operations"))
+(defun rails-test:run-system ()
+  "Run System Tests."
+  (interactive)
+  (rails-test:run "system"))
 (defun rails-test:run-decorators ()
   "Run Decorators Tests."
   (interactive)

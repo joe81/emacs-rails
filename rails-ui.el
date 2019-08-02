@@ -102,8 +102,8 @@
       ([separator1]   '("--"))
       ([toggle]       '(menu-item "Toggle Output Window" rails-script:toggle-output-window
                                   :enable (get-buffer rails-script:buffer-name)))
-      ([run-current]  '("Test Current Model/Controller/Mailer" . rails-test:run-current))
-      ([run]          '("Run Tests ..."                        . rails-test:run)))
+      ([run-current]  '("Test Current File"   . rails-test:run-current))
+      ([run]          '("Run Tests ..."       . rails-test:run)))
     map))
 
 (defconst rails-minor-mode-db-menu-bar-map
